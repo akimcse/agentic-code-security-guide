@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>코딩 에이전트에서 사용 · Agentic 코드 보안</title>
+<link rel="stylesheet" href="styles.css">
+<script src="theme.js"></script>
+</head>
+<body>
+<div class="layout">
+  <aside class="sidebar">
+    <div class="brand"><span class="dot"></span>Agentic 코드 보안</div>
+    <div class="brand-sub">Codename MDASH · 한글 가이드</div>
+    <nav>
+      <div class="nav-group"><h4>개요</h4><a href="index.html">홈 · 개요</a></div>
+      <div class="nav-group"><h4>시작하기</h4><a href="get-started.html">온보딩 · Foundry · 커넥터 · CLI 설정</a></div>
+      <div class="nav-group"><h4>스캔 실행</h4><a href="run-scans.html">On-demand · CLI 실행 · 자동 수정 · CI/CD</a></div>
+      <div class="nav-group"><h4>코딩 에이전트</h4><a href="coding-agent.html" class="active">Defender Code Security 스킬</a></div>
+      <div class="nav-group"><h4>결과 검토</h4><a href="results.html">터미널 결과 · Defender 포털</a></div>
+      <div class="nav-group"><h4>참조</h4><a href="reference.html">감사 로그 · 관리자 동의 스크립트</a></div>
+      <div class="nav-group nav-ext">
+        <h4>블로그</h4>
+        <a href="https://www.microsoft.com/en-us/security/blog/2026/05/12/defense-at-ai-speed-microsofts-new-multi-model-agentic-security-system-tops-leading-industry-benchmark/" target="_blank" rel="noopener">MDASH 공식 발표 블로그</a>
+      </div>
+    </nav>
+    <button class="theme-toggle" id="themeToggle" aria-label="테마 전환">🌙 다크모드</button>
+  </aside>
+
+  <main class="main">
+  <div class="content">
+    <h1 class="page-title">코딩 에이전트에서 사용 — Defender Code Security 스킬</h1>
+    <p class="page-lead">코딩 에이전트를 확장하여 Microsoft Defender 에이전트(Codename MDASH) 스캔 결과를 표시하고, 채팅 안에서 로컬 보안 스캔을 인라인으로 실행합니다. 터미널이나 포털을 벗어나지 않고 최신 발견 항목 확인·스캔·AI 수정 적용까지 수행할 수 있습니다.</p>
+
+    <div>
+      <span class="pill">지원 에이전트: GitHub Copilot CLI</span>
+      <span class="pill">Claude</span>
+    </div>
+
+    <h2>제공되는 스킬</h2>
+    <table>
+      <tr><th>스킬</th><th>동작</th></tr>
+      <tr><td><code>onboard-defender-cli</code></td><td>Defender CLI 바이너리를 다운로드하고 테넌트 설정을 완료합니다.</td></tr>
+      <tr><td><code>run-security-scan</code></td><td>현재 저장소의 최신 MDASH AI 스캔 결과를 가져오고, Defender CLI로 작업 트리(또는 전체 저장소)에 대해 SAST·SCA·IaC·시크릿 스캔을 실행합니다.</td></tr>
+      <tr><td><code>fix-security-issues</code></td><td>선택한 발견 항목에 대한 diff 미리보기를 생성하고, 수락 시 작업 트리에 수정을 적용합니다.</td></tr>
+    </table>
+
+    <h2>할 수 있는 일</h2>
+    <h3>저장소 AI 스캔 결과 가져오기</h3>
+    <p><code>run-security-scan</code> 스킬은 <code>origin</code> 원격에서 저장소를 확인하고 최신 MDASH 발견 항목을 채팅에 반환합니다 — 포털 탐색이 필요 없습니다. 결과에는 브랜치·스캔 타임스탬프·스캔 ID 헤더, 심각도 분포, 그리고 발견 항목별 행(심각도·규칙·파일·라인 번호·짧은 근거·<strong>Fix it</strong> 버튼)이 포함됩니다.</p>
+
+    <h3>로컬 스캔 및 인라인 수정</h3>
+    <p><code>run-security-scan</code>은 로컬 작업 트리에 대해 Defender CLI 스캔을 실행합니다. 스캔된 정확한 범위(변경된 파일 또는 전체 저장소), 심각도·파일 위치별 발견 항목, 각 항목의 <strong>Fix it</strong> 버튼이 표시됩니다.</p>
+    <p><strong>Fix it</strong>을 선택하면 <code>fix-security-issues</code>가 호출되어 diff 미리보기를 게시합니다. 변경을 수락하거나 거부할 수 있으며, 수락된 diff는 작업 트리에 직접 적용됩니다.</p>
+    <div class="tip"><strong>로컬 우선(privacy)</strong> 로컬 스캔·수정 과정에서 <strong>소스 코드는 로컬 머신을 벗어나지 않습니다.</strong></div>
+
+    <h2>요구 사항</h2>
+    <ul>
+      <li>GitHub Copilot CLI 또는 Claude CLI 설치. Copilot CLI가 없다면 <a href="https://aka.ms/copilot" target="_blank">aka.ms/copilot</a>에서 설치합니다.</li>
+      <li>테넌트에 Agentic 코드 보안 온보딩 완료(<a href="get-started.html">시작하기</a> 참고).</li>
+      <li>Microsoft Defender 통합 RBAC에서 <strong>Scan results</strong> 권한 <strong>Read</strong> 수준.</li>
+      <li>온보딩 중 Defender CLI 바이너리 다운로드를 위한 인터넷 연결.</li>
+    </ul>
+
+    <h2>설치 및 온보딩</h2>
+    <h3>GitHub Copilot CLI 사용</h3>
+    <pre><code>copilot plugin install microsoft/security-devops-commonplugin/defender-code-security</code></pre>
+    <div class="note"><strong>참고</strong> 경고 메시지가 나타날 수 있으나 무시해도 됩니다. 실제 고객용 플러그인 설치는 공개 마켓플레이스를 통해 제공될 예정입니다.</div>
+
+    <h3>Claude CLI 사용</h3>
+    <p>아직 Claude 마켓플레이스에 게시되지 않아, GitHub 소스에서 스킬을 수동 설치합니다.</p>
+    <ol class="steps">
+      <li><code>onboard-defender-cli</code> 스킬을 <code>github.com/microsoft/security-devops-common/…/skills/onboard-defender-cli</code> 경로에서 설치합니다. Claude가 <code>SKILL.md</code>와 지원 파일을 가져와 환경에 스킬을 추가합니다.</li>
+      <li>에이전트에게 온보딩을 요청합니다 — 예: <code>Onboard me to Defender CLI</code>. (Copilot CLI라면 터미널에서 <code>copilot -i /defender-code-security:onboard-defender-cli</code>)</li>
+      <li>에이전트가 바이너리를 <code>~/.mdc</code>에 다운로드하고 Authenticode 서명을 검증한 뒤 자동으로 PATH에 추가합니다. 완료를 확인하기만 하면 됩니다.</li>
+      <li>테넌트가 여러 개면 프롬프트에서 테넌트 ID를 선택합니다.</li>
+      <li>온보딩 완료 후 터미널을 재시작하거나 AI 스캔된 Git 저장소 폴더에서 <code>Show me AI scan results for my repo</code>로 검증합니다. 발견 항목이 심각도·파일 위치·수정 제안과 함께 인라인으로 렌더링됩니다.</li>
+    </ol>
+
+    <div class="pagenav">
+      <a href="run-scans.html"><span class="lbl">← 이전</span><br><strong>스캔 실행</strong></a>
+      <a class="nxt" href="results.html"><span class="lbl">다음 →</span><br><strong>결과 검토</strong></a>
+    </div>
+    <div class="footer">출처: Microsoft Learn — Defender Code Security skills. 비공식 한글 요약본.
+      <ul>
+        <li><a href="https://learn.microsoft.com/en-us/security-exposure-management/defender-code-security-plugin" target="_blank" rel="noopener">Defender Code Security skills</a></li>
+      </ul>
+    </div>
+  </div>
+  </main>
+</div>
+</body>
+</html>
