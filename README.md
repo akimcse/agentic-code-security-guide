@@ -10,14 +10,13 @@ Microsoft Defender의 **Agentic 코드 보안 (Codename MDASH — Agentic code s
 
 | 그룹 | 페이지 | 문서 |
 |---|---|---|
-| 개요 | `index.html` | Overview |
+| 개요 | `index.html` | Overview (+ FAQ 아코디언 · 허용 목록은 설치·실행으로 이동) |
 | 시작하기 | `onboarding.html` | Getting Started with Codename MDASH |
 | | `foundry.html` | Connect Microsoft Foundry |
 | | `github-connector.html` | Create a GitHub connector |
 | | `cli-setup.html` | Defender CLI setup |
-| | `faq.html` | Codename MDASH FAQ |
 | 스캔 실행 | `trigger-scan.html` | Trigger an on-demand agentic scan |
-| | `install-run.html` | Install and run |
+| | `install-run.html` | Install and run (+ 네트워크 허용 목록) |
 | | `auto-fix.html` | Auto-fix agentic code vulnerabilities |
 | | `cicd.html` | CI/CD Example |
 | 코딩 에이전트 | `coding-agent.html` | Defender Code Security skills |

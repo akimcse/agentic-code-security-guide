@@ -21,6 +21,18 @@
       <li>스캔할 저장소의 로컬 clone.</li>
     </ul>
 
+    <h2>네트워크 허용 목록(Allow list)</h2>
+    <p>CLI를 실행하는 머신 또는 파이프라인에서 다음 도메인에 접근할 수 있어야 합니다. 아웃바운드가 제한된 환경이라면 아래를 먼저 허용하세요.</p>
+    <table>
+      <tr><th>범주</th><th>도메인</th></tr>
+      <tr><td><code>defender scan ai-scan</code> 필수</td><td class="mono-list">*.cli.dfd.security.azure.com · *.blob.core.windows.net · *.azurefd.net · *.login.microsoftonline.com · *.graph.microsoft.com</td></tr>
+      <tr><td>GitHub Actions (OIDC)</td><td class="mono-list">*.token.actions.githubusercontent.com</td></tr>
+      <tr><td>Azure Pipelines (OIDC)</td><td class="mono-list">*.dev.azure.com</td></tr>
+      <tr><td>텔레메트리(권장)</td><td class="mono-list">*.in.applicationinsights.azure.com · *.dc.services.visualstudio.com</td></tr>
+      <tr><td>선택</td><td class="mono-list">*.aka.ms</td></tr>
+      <tr><td><code>scan fs</code> 필수</td><td class="mono-list">*.ghcr.io · *.public.ecr.aws · *.registry-1.docker.io · *.auth.docker.io</td></tr>
+    </table>
+
     <h2>설치</h2>
     <h3>Windows</h3>
     <pre><code>Invoke-WebRequest `

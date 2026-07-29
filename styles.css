@@ -144,7 +144,7 @@ tr:last-child td { border-bottom: none; }
 .note { background: #eef4fb; border-color: var(--accent); }
 .warn { background: #fdf1ee; border-color: var(--crit); }
 .tip  { background: #eefaf1; border-color: var(--low); }
-.note strong, .warn strong, .tip strong { display: block; margin-bottom: 3px; }
+.note > strong:first-child, .warn > strong:first-child, .tip > strong:first-child { display: block; margin-bottom: 3px; }
 
 /* Badges */
 .badge { display: inline-block; padding: 2px 9px; border-radius: 999px; font-size: 12px; font-weight: 600; color: #fff; }
@@ -178,6 +178,29 @@ tr:last-child td { border-bottom: none; }
 .pagenav .nxt { text-align: right; }
 
 .mono-list { font-family: "Cascadia Code","Consolas",monospace; font-size: 13px; }
+
+/* FAQ accordion */
+.faq-cat { font-size: 15px; color: var(--text-soft); text-transform: none; margin: 24px 0 8px; letter-spacing: -.2px; }
+details {
+  background: var(--surface); border: 1px solid var(--border); border-radius: 10px;
+  padding: 0 16px; margin: 8px 0; box-shadow: var(--shadow); overflow: hidden;
+}
+details[open] { border-color: var(--accent); }
+details > summary {
+  cursor: pointer; padding: 13px 0; font-weight: 600; font-size: 14.5px;
+  list-style: none; display: flex; align-items: center; gap: 10px;
+}
+details > summary::-webkit-details-marker { display: none; }
+details > summary::before {
+  content: "+"; flex-shrink: 0; width: 20px; height: 20px; border-radius: 6px;
+  background: linear-gradient(135deg, var(--accent), var(--accent-2)); color: #fff;
+  display: inline-flex; align-items: center; justify-content: center; font-size: 15px; font-weight: 700;
+}
+details[open] > summary::before { content: "–"; }
+details > div {
+  padding: 0 0 15px 30px; font-size: 14px; color: var(--text-soft); line-height: 1.7;
+}
+details > div code { color: var(--accent-pink); }
 
 /* Theme toggle button — pinned to bottom of the sidebar */
 .theme-toggle {

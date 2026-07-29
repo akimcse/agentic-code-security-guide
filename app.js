@@ -12,20 +12,16 @@
   var TOC = [
     { group: "개요", items: [["index.html", "개요 (Overview)"]] },
     { group: "시작하기", items: [
-      ["onboarding.html", "온보딩 시작하기"],
+      ["onboarding.html", "온보딩"],
       ["foundry.html", "Microsoft Foundry 연결"],
       ["github-connector.html", "GitHub 커넥터 생성"],
-      ["cli-setup.html", "Defender CLI 설정"],
-      ["faq.html", "Codename MDASH FAQ"]
+      ["cli-setup.html", "Defender CLI 설정"]
     ]},
     { group: "스캔 실행", items: [
       ["trigger-scan.html", "On-demand 스캔 트리거"],
       ["install-run.html", "설치 및 실행"],
       ["auto-fix.html", "취약점 자동 수정"],
       ["cicd.html", "CI/CD 예제"]
-    ]},
-    { group: "코딩 에이전트에서 사용", items: [
-      ["coding-agent.html", "Defender Code Security 스킬"]
     ]},
     { group: "결과 검토", items: [
       ["review-terminal.html", "터미널 결과 검토"],
