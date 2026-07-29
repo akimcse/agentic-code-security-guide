@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Defender 포털 결과 검토 · Agentic 코드 보안</title>
+<link rel="stylesheet" href="styles.css">
+<script src="app.js"></script>
+</head>
+<body>
+<div class="layout">
+  <aside class="sidebar" id="sidebar"></aside>
+  <main class="main">
+  <div class="content">
+    <h1 class="page-title">Defender 포털에서 Exposure Management 검토</h1>
+    <p class="page-lead">Agentic 코드 스캔 발견은 Microsoft Security Exposure Management(MSEM)를 통해 포털에 표시됩니다. <strong>Codename MDASH - Agentic code scanner</strong> 이니셔티브가 스캔된 모든 저장소의 발견을 집계해 중앙 집중식 추적·수정 뷰를 제공합니다.</p>
+    <div class="note"><strong>참고</strong> 이 페이지는 AI 스캐너 발견 전용이며 비-AI 스캐너 결과는 표시하지 않습니다. 스캔은 두 경로(Defender CLI, 커넥터 기반 원격 스캔)로 도달하며 원격 결과는 라벨링됩니다. 페이지는 <strong>최근 90일</strong> 활동만 반영합니다.</div>
+
+    <h2>분류(Triage) — AI가 발견을 그룹화하는 방식</h2>
+    <p>모든 발견은 심각도(Critical·High·Medium·Low)와 신뢰도(Likely·Suspect·Unlikely)의 조합으로 3개 버킷에 분류됩니다.</p>
+    <table>
+      <tr><th>버킷</th><th>의미</th><th>해야 할 일</th></tr>
+      <tr><td><span class="badge b-crit">Validated by AI scanner</span></td><td>실제 취약점이라 확신하며 심각도도 충분히 높음.</td><td>지금 조치 — 수정 또는 개발자 배정.</td></tr>
+      <tr><td><span class="badge b-high">Flagged for review</span></td><td>고심각도지만 AI가 스스로 완전히 검증하지 못함.</td><td>일시 정지 — 사람이 조사 후 조치.</td></tr>
+      <tr><td><span class="badge b-low">Low priority</span></td><td>신뢰도 무관, 저·중 심각도.</td><td>연기·음소거 가능 — 배경 노이즈.</td></tr>
+    </table>
+
+    <h2>스캔 출처 구분: CLI vs 원격</h2>
+    <p>모든 스캔·발견은 <strong>Source</strong>(원격 스캔+SCM 아이콘 / CLI), <strong>Status</strong>(Succeeded·Running·Canceled·Failed), <strong>Tokens consumed</strong>(진행 중이면 "—") 신호를 담습니다.</p>
+
+    <h2>페이지 구성 — 3개 탭</h2>
+    <table>
+      <tr><th>탭</th><th>내용</th><th>브랜치 범위</th></tr>
+      <tr><td>Overview</td><td>점수, 14일 추세, 분류 퍼널, 최신 스캔, 가장 흔한 CWE, 권장 항목이 많은 저장소</td><td>기본 브랜치 중심(일부 패널 전체 브랜치)</td></tr>
+      <tr><td>Security recommendations</td><td>(저장소, 브랜치) 조합별 최신 스캔에서 발견당 1행</td><td>전체 브랜치(기본 필터 가능)</td></tr>
+      <tr><td>Scans</td><td>최근 90일 내 실행된 모든 스캔 + 드릴다운</td><td>전체 브랜치</td></tr>
+    </table>
+
+    <h2>Overview 탭 — 6개 패널</h2>
+    <ul>
+      <li><strong>Score</strong> — 0~100% 도넛 차트(높을수록 좋음). 심각도 가중 코드 건강도. 기본 브랜치만.</li>
+      <li><strong>14-day score trend</strong> — 점수 변화 14일 선형 차트로 수정 효과 확인. 기본 브랜치만.</li>
+      <li><strong>Latest AI code scans</strong> — 모든 저장소·브랜치의 최근 3개 스캔 피드. 3개 버킷 색상 막대(Validated는 CSV Export), Source/SCM·Run type·Status 표시.</li>
+      <li><strong>Repositories with the most recommendations</strong> — 저장소별 권장 항목 볼륨 표(기본/전체 브랜치 병기).</li>
+      <li><strong>Recommendation triage funnel</strong> — 심각도 → 버킷 흐름을 명시적으로 시각화하는 유일한 패널. 단계 선택 시 사전 필터된 Recommendations 탭 열림. 기본 브랜치만.</li>
+      <li><strong>Weaknesses with the most recommendations</strong> — 가장 흔한 CWE 표(예: CWE-89). Weakness ID·Name·기본/전체 브랜치·영향 저장소.</li>
+    </ul>
+    <div class="note"><strong>참고</strong> MDASH 발견은 현재 Secure Score·Risk Score에 영향을 주지 않습니다. 유일하게 영향받는 것은 MDASH 이니셔티브 내의 Codename MDASH 위험 점수입니다.</div>
+
+    <h2>Security recommendations 탭</h2>
+    <p>(저장소, 브랜치)별 최신 스캔에서 도출된 개별 권장 항목을 검토·조치하는 주요 작업 공간. 기본은 기본 브랜치 범위이며 전체 브랜치로 전환 가능. 상단 4개 KPI(Total · Validated · Flagged · Low priority).</p>
+    <p><strong>컬럼:</strong> Severity · Confidence(Likely·Suspect·Unlikely) · Recommendation · Weakness ID(CWE) · Repository · Branch · Trigger(Source+Run type) · File · Scan start time.</p>
+    <p><strong>기본 정렬:</strong> 버킷(Validated → Flagged → Low) → 심각도(Critical → High → Medium → Low) → 신뢰도(Likely → Suspect → Unlikely).</p>
+    <ul>
+      <li><strong>최신 스캔만</strong> — 각 행은 해당 (저장소, 브랜치)의 가장 최근 스캔 반영. 새 스캔 시 자동 갱신.</li>
+      <li><strong>스캔 간 지속</strong> — 최신 스캔이 더 이상 탐지하지 않을 때까지 유지.</li>
+      <li><strong>CLI·원격 통합</strong> — "최신 스캔 우선"이 두 출처 모두에 적용.</li>
+    </ul>
+
+    <h2>Scans 탭</h2>
+    <p>최근 90일 내 성공한 모든 스캔. 상단 KPI: 스캔 수 · 스캔된 저장소 수 · Succeeded · Running · Failed.</p>
+    <p><strong>컬럼:</strong> Status · Repository · Branch · Trigger · Tokens · Started · Duration · Severity(스택 막대) · Triage(스택 막대) · Run ID(예: run_d73220eb). 행 선택 시 상세 드로어(Overview·Recommendations 서브탭)가 열립니다.</p>
+    <div class="note"><strong>참고</strong> 메인 Recommendations 탭은 항상 브랜치별 최신 스캔을 보여줍니다. 드로어는 특정 과거 스캔이 <strong>실행 시점에</strong> 발견한 내용을 보는 유일한 곳으로, 감사·사고 검토·연속 실행 비교에 유용합니다.</div>
+
+    <h2>데이터 범위 및 신선도</h2>
+    <ul>
+      <li><strong>90일 가시성 창</strong> — 최근 90일 내 완료 스캔만 표시. 오래된 스캔은 자동 소멸.</li>
+      <li><strong>성공한 스캔만</strong> — Running·Failed·부분·취소 스캔은 미표시.</li>
+      <li><strong>만료 링크</strong> — 90일 초과 스캔 직접 링크는 "Scan not found" 반환.</li>
+    </ul>
+
+    <div class="pagenav">
+      <a href="review-terminal.html"><span class="lbl">← 이전</span><br><strong>터미널 결과 검토</strong></a>
+      <a class="nxt" href="audit-log.html"><span class="lbl">다음 →</span><br><strong>감사 로그 이벤트</strong></a>
+    </div>
+    <div class="footer">출처: <a href="https://learn.microsoft.com/en-us/security-exposure-management/review-portal-results" target="_blank" rel="noopener">Review Exposure Management in Defender portal</a> · <a href="https://learn.microsoft.com/en-us/security-exposure-management/mdash-initiative" target="_blank" rel="noopener">Codename MDASH initiative</a>. 비공식 한글 요약본.</div>
+  </div>
+  </main>
+</div>
+</body>
+</html>

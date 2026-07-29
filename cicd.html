@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CI/CD 예제 · Agentic 코드 보안</title>
+<link rel="stylesheet" href="styles.css">
+<script src="app.js"></script>
+</head>
+<body>
+<div class="layout">
+  <aside class="sidebar" id="sidebar"></aside>
+  <main class="main">
+  <div class="content">
+    <h1 class="page-title">CI/CD 예제 (GitHub Actions)</h1>
+    <p class="page-lead">런타임에 Defender CLI를 내려받고, 자격 증명을 환경 변수로 전달해 파일 시스템 스캔과 AI 스캔 제출을 실행하는 샘플 워크플로입니다. 트리거·경로 범위·시크릿 이름은 저장소 표준에 맞게 조정하세요.</p>
+
+    <div class="warn"><strong>주의</strong> 자격 증명 값을 소스 제어에 커밋하거나 워크플로 로그에 포함하지 마세요. 정기적으로 교체하고 만료 전에 교체해 파이프라인 실패를 방지하세요. 자격 증명 발급·구성은 <a href="cli-setup.html">CLI 설정의 CI/CD 자격 증명 구성</a> 참조.</div>
+
+    <pre><code>name: Defender ASPM scan
+on: [workflow_dispatch]
+
+permissions:
+  contents: read
+  id-token: write
+  security-events: write
+
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    env:
+      DEFENDER_ASPM_TENANT_ID:     ${{ secrets.DEFENDER_ASPM_TENANT_ID }}
+      DEFENDER_ASPM_CLIENT_ID:     ${{ secrets.DEFENDER_ASPM_CLIENT_ID }}
+      DEFENDER_ASPM_CLIENT_SECRET: ${{ secrets.DEFENDER_ASPM_CLIENT_SECRET }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Download Defender CLI
+        run: |
+          curl -fL -o defender \
+            "https://cli.dfd.security.azure.net/public/v2/latest/Defender_linux-x64"
+          chmod +x defender
+      - run: ./defender scan fs .
+      - run: ./defender scan ai-scan submit . --force</code></pre>
+
+    <div class="note"><strong>참고</strong> FAQ 기준, CI/CD 통합은 스캔이 장시간·비결정적이라 <strong>빌드 차단 게이트보다 비동기 보안 검토</strong>에 적합합니다.</div>
+
+    <div class="pagenav">
+      <a href="auto-fix.html"><span class="lbl">← 이전</span><br><strong>취약점 자동 수정</strong></a>
+      <a class="nxt" href="coding-agent.html"><span class="lbl">다음 →</span><br><strong>Defender Code Security 스킬</strong></a>
+    </div>
+    <div class="footer">출처: <a href="https://learn.microsoft.com/en-us/security-exposure-management/defender-cli-cicd" target="_blank" rel="noopener">Microsoft Learn — CI/CD example for Defender CLI</a>. 비공식 한글 요약본.</div>
+  </div>
+  </main>
+</div>
+</body>
+</html>

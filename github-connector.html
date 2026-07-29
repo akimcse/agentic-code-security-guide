@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GitHub 커넥터 생성 · Agentic 코드 보안</title>
+<link rel="stylesheet" href="styles.css">
+<script src="app.js"></script>
+</head>
+<body>
+<div class="layout">
+  <aside class="sidebar" id="sidebar"></aside>
+  <main class="main">
+  <div class="content">
+    <h1 class="page-title">GitHub 커넥터 생성</h1>
+    <p class="page-lead">권장 온보딩 경로입니다. GitHub 조직을 연결해 저장소를 온보딩하면, 로컬 설치 없이 포털에서 원격 On-demand 스캔을 트리거할 수 있습니다.</p>
+
+    <h2>사전 요구사항</h2>
+    <ul>
+      <li>Defender 포털 커넥터 관리 권한 — 최소 <strong>Security Administrator</strong> (Entra ID).</li>
+      <li>연결할 GitHub 조직의 <strong>Organization Owner</strong>.</li>
+    </ul>
+    <div class="warn"><strong>주의</strong> 동일 GitHub 조직이 이미 Azure 포털의 GitHub 커넥터로 연결돼 있다면, Defender 포털로 연결하기 전에 Azure 포털 커넥터를 먼저 해제해야 합니다. 해제 시 그 커넥터에 연결된 Defender for DevOps Security 기능은 더 이상 사용할 수 없습니다.</div>
+
+    <h2>1단계: 테넌트 준비</h2>
+    <p>커넥터 생성 흐름에 접근하려면 테넌트에 Cloud Security가 준비돼 있어야 합니다. 이미 활성화됐다면 <strong>Prepare my tenant</strong> 옵션이 보이지 않고 바로 진행됩니다.</p>
+    <ol class="steps">
+      <li><strong>Cloud security &gt; Overview</strong> 이동.</li>
+      <li><strong>Prepare my tenant</strong> 선택.</li>
+      <li>테넌트 준비 확인.</li>
+    </ol>
+
+    <h2>2단계: 커넥터 마법사 열기</h2>
+    <ol class="steps">
+      <li>Defender 포털에서 <strong>MDASH Initiative &gt; Settings</strong>로 이동. (이니셔티브 접근은 <a href="onboarding.html">온보딩의 진입점</a> 참조.)</li>
+      <li><strong>Create and Manage connectors</strong> 선택 → <strong>Cloud Security Connectors</strong> 페이지로 이동됨.</li>
+      <li><strong>Connectors</strong> 탭에서 목록의 GitHub 커넥터 선택.</li>
+      <li>(선택) 커넥터 이름 입력. 비우면 기본 이름 자동 부여. → <strong>Next</strong>.</li>
+    </ol>
+
+    <h2>3단계: 접근·권한 구성</h2>
+    <table>
+      <tr><th>권한 계층</th><th>설명</th></tr>
+      <tr><td><strong>Read</strong> (기본·제거 불가)</td><td>변경 없이 저장소를 스캔하고 보안 이슈를 식별. 소스코드·메타데이터·Actions·커밋 상태·패키지·보안 데이터(어드바이저리·시크릿) 읽기.</td></tr>
+      <tr><td><strong>Write</strong> (선택)</td><td>이슈·PR 생성/업데이트, 체크·보안 발견 게시, Dependabot·시크릿 스캔 경보 관리 등 워크플로 통합. 스캐닝·탐색만 하려면 Read로 충분.</td></tr>
+    </table>
+    <p>권한 선택을 검토하고 <strong>Next</strong>.</p>
+
+    <h2>4단계: GitHub App 승인·설치</h2>
+    <ol class="steps">
+      <li><strong>Install</strong> → GitHub OAuth 대화 상자 열림.</li>
+      <li>GitHub 로그인 후 온보딩할 조직 선택.</li>
+      <li>GitHub App 설치 화면에서 설치 확인 → 대화 상자 닫힘.</li>
+      <li>성공 확인이 보이면 <strong>Next</strong>.</li>
+    </ol>
+    <div class="note"><strong>참고</strong> 이미 Azure 포털 GitHub 커넥터로 연결된 조직에는 App을 설치할 수 없습니다. 같은 조직을 Defender 포털에서 연결하려면 Azure 포털의 기존 커넥터를 먼저 삭제해야 합니다.</div>
+
+    <h2>5단계: 검토 및 활성화</h2>
+    <p><strong>Review and finish</strong> 페이지에서 커넥터 이름·권한 범위·GitHub 조직명·온보딩될 저장소 수를 확인하고 <strong>Activate</strong>.</p>
+    <div class="note"><strong>참고</strong> 활성화 후 온보딩된 저장소에 대해 On-demand 스캔을 트리거할 수 있게 되기까지 <strong>최대 1시간</strong>이 걸릴 수 있습니다.</div>
+
+    <div class="pagenav">
+      <a href="foundry.html"><span class="lbl">← 이전</span><br><strong>Microsoft Foundry 연결</strong></a>
+      <a class="nxt" href="cli-setup.html"><span class="lbl">다음 →</span><br><strong>Defender CLI 설정</strong></a>
+    </div>
+    <div class="footer">출처: <a href="https://learn.microsoft.com/en-us/security-exposure-management/create-github-connector" target="_blank" rel="noopener">Microsoft Learn — Create a GitHub connector</a>. 비공식 한글 요약본.</div>
+  </div>
+  </main>
+</div>
+</body>
+</html>

@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>감사 로그 이벤트 · Agentic 코드 보안</title>
+<link rel="stylesheet" href="styles.css">
+<script src="app.js"></script>
+</head>
+<body>
+<div class="layout">
+  <aside class="sidebar" id="sidebar"></aside>
+  <main class="main">
+  <div class="content">
+    <h1 class="page-title">감사 로그 이벤트</h1>
+    <p class="page-lead">Agentic 코드 보안은 사용자·시스템 작업을 Microsoft Purview 통합 감사 로그에 기록합니다. 활동 모니터링·사고 조사·규정 준수에 활용합니다.</p>
+
+    <h2>감사되는 작업</h2>
+    <p>모든 레코드는 <strong>Workload</strong> <code>MicrosoftSecurityExposureManagement</code>, <strong>RecordType</strong> <code>500</code>을 사용합니다.</p>
+    <table>
+      <tr><th>작업</th><th>설명</th></tr>
+      <tr><td><code>ConnectedFoundryResource</code></td><td>Foundry 리소스를 연결·업데이트. 자격 증명 생성·업데이트 시 기록(성공·실패 모두).</td></tr>
+      <tr><td><code>DisconnectedFoundryResource</code></td><td>Foundry 자격 증명 삭제. 삭제 시도 시 기록(성공·실패·no-op 포함).</td></tr>
+      <tr><td><code>StartedCodeScan</code></td><td>스캔 제출 수락. S2S SubmitScan 수락 시(CDT 전용).</td></tr>
+      <tr><td><code>UploadedScanResults</code></td><td>결과가 시스템 경계 진입(SARIF blob·AI 스캔 결과 수락). 소스코드 포함 시 ContainsCodeSnippet=true.</td></tr>
+      <tr><td><code>ViewedScanResults</code></td><td>읽기 엔드포인트가 스캔·발견 데이터 반환. 개별 발견 반환 시 true, 집계·목록 뷰는 false.</td></tr>
+    </table>
+
+    <h2>기본 필드 (모든 레코드)</h2>
+    <table>
+      <tr><th>필드</th><th>설명</th></tr>
+      <tr><td>TenantId</td><td>Entra 테넌트 ID</td></tr>
+      <tr><td>UpnField</td><td>작업 수행 사용자 UPN</td></tr>
+      <tr><td>RequestorName / RequestorId / RequestorType</td><td>요청자 표시 이름 · 고유 식별자 · 유형(User/Service 등)</td></tr>
+      <tr><td>OriginIp</td><td>작업 수행 IP</td></tr>
+      <tr><td>RecordType / Workload / Operation</td><td>항상 500 · MicrosoftSecurityExposureManagement · 작업 이름</td></tr>
+    </table>
+
+    <h2>작업 데이터 필드</h2>
+    <table>
+      <tr><th>필드</th><th>설명</th></tr>
+      <tr><td>ScanId</td><td>연결된 스캔 고유 식별자. 없으면 null.</td></tr>
+      <tr><td>TargetIdentifier</td><td>작업 대상 리소스. 형식은 작업별 상이. 해당 없으면 null.</td></tr>
+      <tr><td>InitiatedFrom</td><td>진입점: Portal 또는 CLI.</td></tr>
+      <tr><td>ContainsCodeSnippet</td><td>소스코드 접근·처리 시 true(예: 인라인 코드 영역 SARIF, 발견 상세).</td></tr>
+    </table>
+
+    <h2>작업별 필드 값</h2>
+    <table>
+      <tr><th>작업</th><th>ScanId</th><th>TargetIdentifier</th><th>From</th><th>Code</th></tr>
+      <tr><td><code>ConnectedFoundryResource</code></td><td>null</td><td>Foundry 엔드포인트 URL</td><td>Portal</td><td>false</td></tr>
+      <tr><td><code>DisconnectedFoundryResource</code></td><td>null</td><td>null</td><td>Portal</td><td>false</td></tr>
+      <tr><td><code>StartedCodeScan</code></td><td>Scan GUID</td><td><code>{repo}|{branch}</code></td><td>CLI</td><td>false</td></tr>
+      <tr><td><code>UploadedScanResults</code> (portal)</td><td>Scan GUID</td><td>null</td><td>Portal</td><td>true</td></tr>
+      <tr><td><code>UploadedScanResults</code> (CLI)</td><td>null</td><td><code>{repo}@{branch}</code></td><td>CLI</td><td>true</td></tr>
+      <tr><td><code>ViewedScanResults</code> (스캔별)</td><td>Scan GUID</td><td><code>{repo}@{branch}</code> (단일 repo·branch일 때, 아니면 null)</td><td>Portal/CLI</td><td>true</td></tr>
+      <tr><td><code>ViewedScanResults</code> (요약)</td><td>null</td><td>null</td><td>Portal</td><td>false</td></tr>
+    </table>
+    <div class="note"><strong>참고</strong> SARIF 결과는 보통 인라인 코드 영역을 포함하므로, 개별 발견을 반환하는 모든 <code>ViewedScanResults</code>와 모든 <code>UploadedScanResults</code>에서 ContainsCodeSnippet=true입니다. 이 필드로 소스코드가 접근된 감사 레코드를 식별하세요.</div>
+
+    <div class="pagenav">
+      <a href="review-portal.html"><span class="lbl">← 이전</span><br><strong>Defender 포털 결과 검토</strong></a>
+      <a class="nxt" href="admin-consent.html"><span class="lbl">다음 →</span><br><strong>관리자 동의 스크립트</strong></a>
+    </div>
+    <div class="footer">출처: <a href="https://learn.microsoft.com/en-us/security-exposure-management/mdash-audit-log-events" target="_blank" rel="noopener">Microsoft Learn — Audit log events</a>. 비공식 한글 요약본.</div>
+  </div>
+  </main>
+</div>
+</body>
+</html>

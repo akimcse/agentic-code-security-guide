@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>관리자 동의 스크립트 · Agentic 코드 보안</title>
+<link rel="stylesheet" href="styles.css">
+<script src="app.js"></script>
+</head>
+<body>
+<div class="layout">
+  <aside class="sidebar" id="sidebar"></aside>
+  <main class="main">
+  <div class="content">
+    <h1 class="page-title">Microsoft Defender Code 관리자 동의 스크립트</h1>
+    <p class="page-lead">Microsoft Azure CLI 클라이언트가 <code>Defender.InteractiveLogin</code> 위임 범위로 Microsoft Defender Code 1st-party 앱을 호출하도록 <strong>테넌트 전역 관리자 동의</strong>를 부여하는 PowerShell 스크립트입니다.</p>
+
+    <div class="tip"><strong>실행 방법</strong> <code>Grant-DefenderAdminConsent.ps1</code>로 저장 후 <code>./Grant-DefenderAdminConsent.ps1 -TenantId &lt;tenant-id&gt;</code> 실행. 선택적으로 <code>-VerifyToken</code> 스위치로 검증 토큰을 획득할 수 있습니다. Azure CLI가 필요합니다.</div>
+
+    <pre><code>[CmdletBinding()]
+param(
+    [Parameter(Mandatory = $true, Position = 0)]
+    [ValidatePattern('^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$')]
+    [string]$TenantId,
+
+    [switch]$VerifyToken
+)
+
+$ErrorActionPreference = 'Stop'
+
+# Constants
+$FpaAppId   = 'c2fd607e-fe6e-41bd-ae58-08e2f24014aa'  # Microsoft Defender Code
+$CliAppId   = '04b07795-8ddb-461a-bbee-02f9e1bf7b46'
+$ScopeValue = 'Defender.InteractiveLogin'
+
+function Invoke-AzCli {
+    param([Parameter(Mandatory)][string[]]$Arguments)
+    $out = &amp; az @Arguments 2>&amp;1
+    if ($LASTEXITCODE -ne 0) {
+        throw "az $($Arguments -join ' ') failed:`n$out"
+    }
+    return $out
+}
+
+function Get-OrCreateServicePrincipal {
+    param([Parameter(Mandatory)][string]$AppId)
+
+    $filter = "appId eq '$AppId'"
+    $url    = "https://graph.microsoft.com/v1.0/servicePrincipals?`$filter=$filter&amp;`$select=id,appId,displayName"
+    $resp   = Invoke-AzCli -Arguments @('rest','--method','GET','--url',$url) | Out-String | ConvertFrom-Json
+
+    if ($resp.value -and $resp.value.Count -gt 0) {
+        return $resp.value[0]
+    }
+
+    Write-Host "Service principal for appId $AppId not found in tenant -- creating..." -ForegroundColor Yellow
+    $bodyFile = New-TemporaryFile
+    try {
+        Set-Content -Path $bodyFile -Value ('{"appId":"' + $AppId + '"}') -NoNewline -Encoding utf8
+        $created = Invoke-AzCli -Arguments @(
+            'rest','--method','POST',
+            '--url','https://graph.microsoft.com/v1.0/servicePrincipals',
+            '--headers','Content-Type=application/json',
+            '--body',"@$bodyFile"
+        ) | Out-String | ConvertFrom-Json
+        return $created
+    }
+    finally {
+        Remove-Item $bodyFile -ErrorAction SilentlyContinue
+    }
+}
+
+Write-Host "==> az login to tenant $TenantId" -ForegroundColor Cyan
+&amp; az login --tenant $TenantId --use-device-code --allow-no-subscriptions | Out-Host
+if ($LASTEXITCODE -ne 0) { throw "az login failed (exit $LASTEXITCODE)" }
+
+Write-Host "==> Resolving service principals" -ForegroundColor Cyan
+$fpaSp = Get-OrCreateServicePrincipal -AppId $FpaAppId
+$cliSp = Get-OrCreateServicePrincipal -AppId $CliAppId
+Write-Host "    FPA SP: $($fpaSp.id) ($($fpaSp.displayName))"
+Write-Host "    CLI SP: $($cliSp.id) ($($cliSp.displayName))"
+
+Write-Host "==> Checking for existing oauth2PermissionGrant" -ForegroundColor Cyan
+$existing = Invoke-AzCli -Arguments @(
+    'rest','--method','GET',
+    '--url',"https://graph.microsoft.com/v1.0/oauth2PermissionGrants?`$filter=clientId eq '$($cliSp.id)' and resourceId eq '$($fpaSp.id)' and consentType eq 'AllPrincipals'"
+) | Out-String | ConvertFrom-Json
+
+$match = $existing.value | Where-Object { ($_.scope -split '\s+') -contains $ScopeValue }
+if ($match) {
+    Write-Host "    Grant already exists (id $($match.id)). Skipping create." -ForegroundColor Green
+    $grant = $match
+}
+else {
+    Write-Host "==> Creating tenant-wide admin consent grant ($ScopeValue)" -ForegroundColor Cyan
+    $bodyFile = New-TemporaryFile
+    try {
+        $body = @{
+            clientId    = $cliSp.id
+            consentType = 'AllPrincipals'
+            resourceId  = $fpaSp.id
+            scope       = $ScopeValue
+        } | ConvertTo-Json -Compress
+        Set-Content -Path $bodyFile -Value $body -NoNewline -Encoding utf8
+        $grant = Invoke-AzCli -Arguments @(
+            'rest','--method','POST',
+            '--url','https://graph.microsoft.com/v1.0/oauth2PermissionGrants',
+            '--headers','Content-Type=application/json',
+            '--body',"@$bodyFile"
+        ) | Out-String | ConvertFrom-Json
+    }
+    finally {
+        Remove-Item $bodyFile -ErrorAction SilentlyContinue
+    }
+    Write-Host "    Grant id: $($grant.id)" -ForegroundColor Green
+}
+
+if ($VerifyToken) {
+    Write-Host "==> Acquiring verification token" -ForegroundColor Cyan
+    $tok = Invoke-AzCli -Arguments @(
+        'account','get-access-token',
+        '--tenant',$TenantId,
+        '--scope',"$FpaAppId/$ScopeValue",
+        '--query','accessToken','-o','tsv'
+    ) | Out-String
+    $tok = $tok.Trim()
+    Write-Host "    Token acquired." -ForegroundColor Green
+}
+
+Write-Host "`nDone." -ForegroundColor Green</code></pre>
+    <div class="warn"><strong>보안 주의</strong> 이 스크립트는 테넌트 전역 관리자 동의를 부여하므로 반드시 내용을 검토하고 신뢰할 수 있는 관리자 계정으로 실행하세요. 실행 전 최신 원문과 대조하는 것을 권장합니다.</div>
+
+    <div class="pagenav">
+      <a href="audit-log.html"><span class="lbl">← 이전</span><br><strong>감사 로그 이벤트</strong></a>
+      <a class="nxt" href="index.html"><span class="lbl">처음으로 →</span><br><strong>개요</strong></a>
+    </div>
+    <div class="footer">출처: <a href="https://learn.microsoft.com/en-us/security-exposure-management/microsoft-defender-code-admin-consent-script" target="_blank" rel="noopener">Microsoft Learn — Microsoft Defender Code admin consent script</a>. 비공식 한글 요약본.</div>
+  </div>
+  </main>
+</div>
+</body>
+</html>

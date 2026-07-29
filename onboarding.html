@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>온보딩 시작하기 · Agentic 코드 보안</title>
+<link rel="stylesheet" href="styles.css">
+<script src="app.js"></script>
+</head>
+<body>
+<div class="layout">
+  <aside class="sidebar" id="sidebar"></aside>
+  <main class="main">
+  <div class="content">
+    <h1 class="page-title">온보딩 시작하기 (Getting Started with Codename MDASH)</h1>
+    <p class="page-lead">조직을 Agentic 코드 보안에 연결하고 스캔을 시작하기 위한 사전 요구사항, 권한(RBAC), 온보딩 5단계를 다룹니다.</p>
+
+    <h2>사전 요구사항 체크리스트</h2>
+    <ul>
+      <li>Microsoft Entra ID에서 <strong>전역 관리자</strong> 또는 <strong>보안 관리자</strong> 역할.</li>
+      <li>온보딩 중 조직을 대표하여 MDASH 이용 약관을 수락할 권한.</li>
+      <li>MDASH <strong>전용</strong> Microsoft Foundry 리소스를 생성할 Azure 구독·리소스 그룹.</li>
+      <li>필수 모델을 배포할 권한 (모델 목록은 <a href="foundry.html">Microsoft Foundry 연결 &gt; 필수 모델 배포</a> 참조).</li>
+      <li>Foundry 네트워킹이 <strong>Selected networks and private endpoints</strong>인 경우, MDASH 접근 허용 조치 필요.</li>
+      <li>다음 AI 스캔 경로 중 최소 하나 (나머지는 나중에 추가 가능): <a href="github-connector.html">원격 스캔(GitHub 커넥터, 권장)</a> 또는 <a href="cli-setup.html">Defender CLI</a>.</li>
+      <li>아웃바운드 제한 시 <a href="index.html">허용 목록</a> 도메인 허용.</li>
+      <li>Defender 포털에서 <strong>Exposure Management</strong>·<strong>Initiatives</strong>를 열 권한, 그리고 Foundry 프로젝트 엔드포인트·API 키.</li>
+    </ul>
+
+    <h3>Defender RBAC 권한 (최소 권한 부여)</h3>
+    <table>
+      <tr><th>권한</th><th>용도</th></tr>
+      <tr><td><strong>Run scan (Manage)</strong></td><td>On-demand 또는 CLI 스캔 트리거</td></tr>
+      <tr><td><strong>Upload results (Manage)</strong></td><td>CLI 스캔 결과를 Defender에 업로드</td></tr>
+      <tr><td><strong>Scan results (Read)</strong></td><td>포털·이니셔티브에서 발견 항목 조회</td></tr>
+      <tr><td><strong>Scan results (Manage)</strong></td><td>발견 항목 분류·해제·관리</td></tr>
+    </table>
+
+    <h3>커스텀 역할 생성 절차</h3>
+    <ol class="steps">
+      <li><a href="https://security.microsoft.com" target="_blank" rel="noopener">Microsoft Defender 포털</a> 로그인.</li>
+      <li>탐색 창에서 <strong>System &gt; Permissions</strong>.</li>
+      <li><strong>Microsoft Defender XDR</strong> 아래 <strong>Roles &gt; Create custom role</strong>.</li>
+      <li><strong>Basics</strong>에서 역할 이름·설명 입력.</li>
+      <li><strong>Choose permissions</strong>에서 <strong>Agentic code security &gt; AI Scan Security</strong>를 확장해 필요한 권한 설정.</li>
+      <li><strong>Apply → Next</strong>로 사용자·데이터 원본 할당 후 <strong>Submit</strong>.</li>
+    </ol>
+
+    <h2>진입점(Entry points)</h2>
+    <ul>
+      <li><strong>Exposure Management &gt; Overview</strong> → <strong>Agentic code security</strong> 선택</li>
+      <li><strong>Exposure Management &gt; Initiatives</strong> → <strong>Codename MDASH - Agentic code scanner</strong> 이니셔티브 선택</li>
+    </ul>
+
+    <h2>온보딩 단계</h2>
+    <ol class="steps">
+      <li><strong>약관 수락</strong> — 약관 검토 후 체크박스로 수락(수락해야 Save 가능).</li>
+      <li><strong>Microsoft Foundry 리소스 연결</strong> — <a href="foundry.html">Foundry 연결</a> 절차 수행.</li>
+      <li><strong>Defender 포털 온보딩</strong> — <strong>Project endpoint</strong>·<strong>API key</strong> 입력 → <strong>Validate</strong> → <strong>Save</strong> (검증 성공해야 저장 가능).</li>
+      <li><strong>AI 스캔 설정</strong> — <a href="github-connector.html">GitHub 커넥터(원격, 권장)</a> 또는 <a href="cli-setup.html">Defender CLI</a> 구성. 이 단계는 나중에 완료해도 되지만, 완료 전에는 스캔이 정상 실행되지 않습니다.</li>
+      <li><strong>권장 사항 검토</strong> — 스캔 실행 후 <a href="review-portal.html">포털</a>에서 발견 항목 확인.</li>
+    </ol>
+
+    <div class="pagenav">
+      <a href="index.html"><span class="lbl">← 이전</span><br><strong>개요</strong></a>
+      <a class="nxt" href="foundry.html"><span class="lbl">다음 →</span><br><strong>Microsoft Foundry 연결</strong></a>
+    </div>
+    <div class="footer">출처: <a href="https://learn.microsoft.com/en-us/security-exposure-management/ai-code-security-onboarding" target="_blank" rel="noopener">Microsoft Learn — Getting Started with Codename MDASH</a>. 비공식 한글 요약본.</div>
+  </div>
+  </main>
+</div>
+</body>
+</html>

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>터미널 결과 검토 · Agentic 코드 보안</title>
+<link rel="stylesheet" href="styles.css">
+<script src="app.js"></script>
+</head>
+<body>
+<div class="layout">
+  <aside class="sidebar" id="sidebar"></aside>
+  <main class="main">
+  <div class="content">
+    <h1 class="page-title">터미널 결과 검토</h1>
+    <p class="page-lead">스캔이 완료되면 Defender CLI가 스캔을 시작한 디렉터리에 결과 파일을 자동 생성합니다. 사람용 HTML 리포트와 도구 연동용 SARIF, 두 형식이 제공됩니다.</p>
+
+    <h2>사전 요구사항</h2>
+    <ul>
+      <li>Defender CLI 설치·인증 (<a href="cli-setup.html">CLI 설정</a>).</li>
+      <li>Defender 통합 RBAC의 <strong>Scan results (Read)</strong> 권한.</li>
+      <li>완료된 AI 스캔: <code>defender scan ai-scan wait &lt;JOB_ID&gt;</code></li>
+    </ul>
+
+    <h2>결과 파일</h2>
+    <table>
+      <tr><th>형식</th><th>적합한 용도</th></tr>
+      <tr><td>HTML 리포트</td><td>사람 검토 — 발견·심각도·영향 코드 경로·권장 수정의 시각적 요약.</td></tr>
+      <tr><td>SARIF 파일</td><td>프로그래밍적 처리 — CI/CD 통합, 보안 대시보드 임포트, 커스텀 리포팅.</td></tr>
+    </table>
+
+    <h2>HTML 리포트</h2>
+    <p>스캔 디렉터리로 이동해 생성된 <code>.html</code>을 브라우저에서 엽니다. 포함 내용:</p>
+    <ul>
+      <li><strong>발견 요약</strong> — 심각도별(Critical·Important·Moderate·Low) 총계.</li>
+      <li><strong>심각도 분석</strong> — CWE 분류·심각도·검증 단계 신뢰도 점수.</li>
+      <li><strong>영향 코드 경로</strong> — 파일 경로·라인·코드 스니펫.</li>
+      <li><strong>권장 수정</strong> — 항목별 AI 생성 수정 제안.</li>
+    </ul>
+
+    <h2>SARIF 파일 (v2.1.0)</h2>
+    <p>OASIS SARIF v2.1.0 사양을 따르는 기계 판독 결과로 업계 표준 도구와 호환됩니다. 용도: CI/CD 임포트(GitHub Advanced Security·Azure DevOps PR 주석), SIEM·보안 자세 도구 공급, 커스텀 리포트, 스캔 간 비교로 수정 속도 추적.</p>
+    <table>
+      <tr><th>섹션</th><th>설명</th></tr>
+      <tr><td><code>runs[].results[]</code></td><td>규칙 ID·심각도·메시지·위치를 포함한 개별 발견 배열.</td></tr>
+      <tr><td><code>runs[].tool</code></td><td>스캐닝 하네스 버전·구성 메타데이터.</td></tr>
+      <tr><td><code>runs[].results[].locations[]</code></td><td>각 발견의 물리·논리 위치(파일 경로·라인·컬럼).</td></tr>
+      <tr><td><code>runs[].results[].codeFlows[]</code></td><td>취약점 도달 경로의 단계별 실행 흐름(prove 단계에서 가능할 때).</td></tr>
+    </table>
+    <pre><code># 완료된 스캔 결과 다운로드
+defender status wait &lt;JOB_ID&gt; -o results.sarif</code></pre>
+
+    <div class="pagenav">
+      <a href="coding-agent.html"><span class="lbl">← 이전</span><br><strong>Defender Code Security 스킬</strong></a>
+      <a class="nxt" href="review-portal.html"><span class="lbl">다음 →</span><br><strong>Defender 포털 결과 검토</strong></a>
+    </div>
+    <div class="footer">출처: <a href="https://learn.microsoft.com/en-us/security-exposure-management/review-terminal-results" target="_blank" rel="noopener">Microsoft Learn — Review terminal results</a>. 비공식 한글 요약본.</div>
+  </div>
+  </main>
+</div>
+</body>
+</html>

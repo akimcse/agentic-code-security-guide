@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>On-demand 스캔 트리거 · Agentic 코드 보안</title>
+<link rel="stylesheet" href="styles.css">
+<script src="app.js"></script>
+</head>
+<body>
+<div class="layout">
+  <aside class="sidebar" id="sidebar"></aside>
+  <main class="main">
+  <div class="content">
+    <h1 class="page-title">On-demand 에이전트 스캔 트리거 (포털)</h1>
+    <p class="page-lead">GitHub 커넥터가 활성화되면 온보딩된 저장소에 대해 원격 On-demand 스캔을 실행할 수 있습니다. (활성화 후 최대 1시간 후 사용 가능)</p>
+
+    <h2>사전 요구사항</h2>
+    <ul><li>생성·활성화된 <a href="github-connector.html">GitHub 커넥터</a>.</li></ul>
+
+    <h2>1단계: Manage scans 열기</h2>
+    <ol class="steps">
+      <li>Defender 포털 &gt; <strong>Exposure management &gt; Initiatives</strong>.</li>
+      <li><strong>Codename MDASH - Agentic code scanner (preview)</strong> 이니셔티브 → <strong>Open initiative page</strong>.</li>
+      <li><strong>Manage scans</strong> 버튼 선택 (Settings 옆).</li>
+    </ol>
+
+    <h2>2단계: 저장소 목록 확인</h2>
+    <p>측면 패널에 활성화된 SCM 커넥터로 발견된 모든 저장소가 표시됩니다. 각 저장소별로:</p>
+    <ul>
+      <li>저장소 이름 · 저장소 크기 · 조직명</li>
+      <li><strong>SCM 유형</strong> (Source Control Management 플랫폼 종류, 예: GitHub)</li>
+      <li>스캔 상태 — 마지막 스캔 · 마지막 스캔의 소비 토큰</li>
+    </ul>
+    <p>저장소 크기와 소비 토큰 신호는 스캔 전에 영향도를 예측하는 데 도움이 됩니다.</p>
+
+    <h2>3단계: 저장소 선택 후 스캔 실행</h2>
+    <ol class="steps">
+      <li>스캔할 저장소 선택.</li>
+      <li><strong>Start scan</strong> 선택.</li>
+      <li>나타나는 대화 상자에서 확인.</li>
+    </ol>
+    <div class="note"><strong>큐 제한</strong> 테넌트에 포털·CLI를 합쳐 이미 <strong>10개의 대기(queued) 스캔</strong>이 있으면 경고가 표시됩니다. 그래도 제출은 가능합니다. 제출 후 <strong>72시간 내에 실행이 시작되지 않은 대기 스캔은 자동 정리</strong>되므로 일부 대기 스캔은 실행되지 않을 수 있습니다.</div>
+    <p>스캔 시작 시 알림이 뜨고, 새 스캔이 <strong>Scans</strong> 탭에 나타나 수명주기를 진행합니다.</p>
+
+    <div class="pagenav">
+      <a href="faq.html"><span class="lbl">← 이전</span><br><strong>Codename MDASH FAQ</strong></a>
+      <a class="nxt" href="install-run.html"><span class="lbl">다음 →</span><br><strong>설치 및 실행</strong></a>
+    </div>
+    <div class="footer">출처: <a href="https://learn.microsoft.com/en-us/security-exposure-management/trigger-on-demand-scan" target="_blank" rel="noopener">Microsoft Learn — Trigger an on-demand agentic scan</a>. 비공식 한글 요약본.</div>
+  </div>
+  </main>
+</div>
+</body>
+</html>
