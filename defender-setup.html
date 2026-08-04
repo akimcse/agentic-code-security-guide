@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Defender 설정 · MDASH Private Preview 가이드</title>
+<link rel="stylesheet" href="styles.css">
+<script src="app.js"></script>
+</head>
+<body>
+<div class="layout">
+  <aside class="sidebar" id="sidebar"></aside>
+  <main class="main">
+  <div class="content">
+    <h1 class="page-title">Defender 설정</h1>
+    <p class="page-lead">Defender 포털 쪽 온보딩 — 권한(RBAC)·커스텀 역할 생성과 이니셔티브 진입점을 다룹니다. 전체 설정 단계와 사전 요구사항은 <a href="index.html">개요</a>를 참고하세요.</p>
+
+    <h2>권한 및 커스텀 역할 (RBAC)</h2>
+    <h3>커스텀 역할 생성 절차</h3>
+    <ol class="steps">
+      <li><a href="https://security.microsoft.com" target="_blank" rel="noopener">Microsoft Defender 포털</a> 로그인.</li>
+      <li>탐색 창에서 <strong>System &gt; Permissions</strong>.</li>
+      <li><strong>Microsoft Defender XDR</strong> 아래 <strong>Roles &gt; Create custom role</strong>.</li>
+      <li><strong>Basics</strong>에서 역할 이름·설명 입력.</li>
+      <li><strong>Choose permissions</strong>에서 <strong>Agentic code security &gt; AI Scan Security</strong>를 확장해 필요한 권한 설정.</li>
+      <li><strong>Apply → Next</strong>로 사용자·데이터 원본 할당 후 <strong>Submit</strong>.</li>
+    </ol>
+
+    <h3>Defender RBAC 권한 (최소 권한 부여)</h3>
+    <p><strong>Agentic Code Security</strong> 권한 그룹 안에서 각 사용자에게 필요한 권한만 부여하세요.</p>
+    <table>
+      <tr><th>권한</th><th>용도</th></tr>
+      <tr><td><strong>Run scan (Manage)</strong></td><td>On-demand 또는 CLI 스캔 트리거</td></tr>
+      <tr><td><strong>Upload results (Manage)</strong></td><td>CLI 스캔 결과를 Defender에 업로드</td></tr>
+      <tr><td><strong>Scan results (Read)</strong></td><td>포털·이니셔티브에서 발견 항목 조회</td></tr>
+      <tr><td><strong>Scan results (Manage)</strong></td><td>발견 항목 분류·해제·관리</td></tr>
+    </table>
+
+    <h2>진입점(Entry points)</h2>
+    <p>Defender 포털에서 다음 위치 중 하나로 온보딩 플로우를 시작합니다.</p>
+    <ul>
+      <li><strong>Exposure Management &gt; Overview</strong> → <strong>Agentic code security</strong> 선택</li>
+      <li><strong>Exposure Management &gt; Initiatives</strong> → <strong>Codename MDASH - Agentic code scanner</strong> 이니셔티브 선택</li>
+    </ul>
+
+    <h2>온보딩 플로우 — 포털에서 하는 작업</h2>
+    <p>진입점에서 온보딩 플로우를 시작하면 Defender 포털에서는 다음 <strong>두 가지</strong>를 수행합니다.</p>
+    <ol class="steps">
+      <li><strong>약관 수락</strong> — 온보딩 플로우에서 약관을 검토하고 체크박스로 수락합니다. (수락해야 이후 <strong>Save</strong>가 활성화됩니다.)</li>
+      <li><strong>Defender 포털 온보딩</strong> — <a href="foundry.html">Foundry 설정</a>에서 복사한 <strong>Project endpoint</strong>(예: <code>https://your-foundry.azure.com</code>)와 <strong>API key</strong>를 입력 → <strong>Validate</strong>로 연결 검증 → <strong>Save</strong>로 온보딩 완료. (검증에 성공해야 저장할 수 있습니다.)</li>
+    </ol>
+    <div class="note"><strong>참고</strong> 저장 후 실제 스캔을 실행하려면 <a href="github-connector.html">GitHub 커넥터(원격, 권장)</a> 또는 <a href="cli-setup.html">Defender CLI</a> 경로를 구성해야 합니다. GitHub 커넥터는 이 온보딩 전후 어느 시점에 만들어도 됩니다.</div>
+
+    <div class="pagenav">
+      <a href="foundry.html"><span class="lbl">← 이전</span><br><strong>Foundry 설정</strong></a>
+      <a class="nxt" href="github-connector.html"><span class="lbl">다음 →</span><br><strong>GitHub 커넥터 생성</strong></a>
+    </div>
+    <div class="footer">출처: <a href="https://learn.microsoft.com/en-us/security-exposure-management/ai-code-security-onboarding" target="_blank" rel="noopener">Microsoft Learn — Getting Started with Codename MDASH</a>. 비공식 한글 요약본.</div>
+  </div>
+  </main>
+</div>
+</body>
+</html>

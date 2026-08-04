@@ -11,25 +11,29 @@
   // Full table of contents, mirroring the official Microsoft Learn "Codename MDASH" TOC.
   var TOC = [
     { group: "개요", items: [["index.html", "개요 (Overview)"]] },
-    { group: "시작하기", items: [
-      ["onboarding.html", "온보딩"],
-      ["foundry.html", "Microsoft Foundry 연결"],
-      ["github-connector.html", "GitHub 커넥터 생성"],
-      ["cli-setup.html", "Defender CLI 설정"]
+    { group: "시작하기 (공통)", items: [
+      ["foundry.html", "Foundry 설정"],
+      ["defender-setup.html", "Defender 설정"]
     ]},
-    { group: "스캔 실행", items: [
-      ["trigger-scan.html", "On-demand 스캔 트리거"],
+    { group: "원격 스캔 (GitHub 경로)", items: [
+      ["github-connector.html", "GitHub 커넥터 생성"],
+      ["trigger-scan.html", "On-demand 스캔 트리거"]
+    ]},
+    { group: "로컬·CI/CD 스캔 (CLI 경로)", items: [
+      ["cli-setup.html", "Defender CLI 설정"],
+      ["admin-consent.html", "관리자 동의 스크립트", true],
       ["install-run.html", "설치 및 실행"],
+      ["review-terminal.html", "터미널 결과 검토"],
       ["auto-fix.html", "취약점 자동 수정"],
       ["cicd.html", "CI/CD 예제"]
     ]},
-    { group: "결과 검토", items: [
-      ["review-terminal.html", "터미널 결과 검토"],
+    { group: "결과 검토 (공통)", items: [
       ["review-portal.html", "Defender 포털 결과 검토"]
     ]},
     { group: "참조", items: [
-      ["audit-log.html", "감사 로그 이벤트"],
-      ["admin-consent.html", "관리자 동의 스크립트"]
+      ["faq.html", "자주 묻는 질문 (FAQ)"],
+      ["troubleshooting.html", "트러블슈팅"],
+      ["audit-log.html", "감사 로그 이벤트"]
     ]},
     { group: "블로그", ext: true, items: [
       ["https://www.microsoft.com/en-us/security/blog/2026/05/12/defense-at-ai-speed-microsofts-new-multi-model-agentic-security-system-tops-leading-industry-benchmark/", "MDASH 공식 발표 (2026.05)"],
@@ -51,18 +55,21 @@
     if (!aside) return;
     var here = currentFile();
 
-    var html = '<div class="brand"><span class="dot"></span>Agentic 코드 보안</div>' +
-               '<div class="brand-sub">Codename MDASH · 한글 가이드</div><nav>';
+    var html = '<div class="brand"><span class="dot"></span>MDASH Private Preview 가이드</div>' +
+               '<div class="brand-sub">Agentic 코드 보안 · 한글 가이드</div><nav>';
 
     TOC.forEach(function (g) {
       html += '<div class="nav-group' + (g.ext ? " nav-ext" : "") + '"><h4>' + g.group + "</h4>";
       g.items.forEach(function (it) {
-        var href = it[0], text = it[1];
+        var href = it[0], text = it[1], sub = it[2];
         if (g.ext) {
           html += '<a href="' + href + '" target="_blank" rel="noopener">' + text + "</a>";
         } else {
-          var active = href === here ? ' class="active"' : "";
-          html += '<a href="' + href + '"' + active + ">" + text + "</a>";
+          var cls = [];
+          if (href === here) cls.push("active");
+          if (sub) cls.push("nav-sub");
+          var clsAttr = cls.length ? ' class="' + cls.join(" ") + '"' : "";
+          html += '<a href="' + href + '"' + clsAttr + ">" + text + "</a>";
         }
       });
       html += "</div>";

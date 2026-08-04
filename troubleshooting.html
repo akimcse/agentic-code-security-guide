@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>트러블슈팅 · MDASH Private Preview 가이드</title>
+<link rel="stylesheet" href="styles.css">
+<script src="app.js"></script>
+</head>
+<body>
+<div class="layout">
+  <aside class="sidebar" id="sidebar"></aside>
+  <main class="main">
+  <div class="content">
+    <h1 class="page-title">트러블슈팅</h1>
+    <p class="page-lead">MDASH 설정·스캔 과정에서 자주 마주치는 증상과 해결 방법을 정리했습니다.</p>
+
+    <h2>이니셔티브에 "Secure code scanning is not configured"만 뜨고 데이터가 없어요</h2>
+    <figure class="fig">
+      <img src="images/initiative-not-configured.png" alt="Codename MDASH 이니셔티브 페이지에 'Secure code scanning is not configured'와 'Not configured' 배지가 표시되고 데이터가 없는 화면">
+      <figcaption>AI 스캔 경로가 아직 구성되지 않은 상태 — 헤더에 <code>Not configured</code> 배지가 뜨고, 스캔이 실행된 적이 없어 표출할 데이터가 없습니다.</figcaption>
+    </figure>
+    <p>이 화면은 <strong>오류가 아니라 아직 스캔 경로가 구성되지 않은 정상 상태</strong>입니다. 이니셔티브 헤더에 <code>Not configured</code> 배지가 보이고, 본문에는 <em>"Secure code scanning is not configured — To run AI-based code scanning: Set up the required authentication and configure your CI/CD pipeline."</em>가 표시됩니다. AI 스캔 경로(인증 + 스캔 방법)를 아직 설정하지 않아 스캔이 한 번도 실행되지 않았고, 그래서 표시할 데이터가 없는 것입니다.</p>
+    <p><strong>해결:</strong> <a href="index.html">개요의 전체 설정 단계</a> 4단계(AI 스캔 설정)를 완료해 스캔 경로를 하나 이상 구성하세요.</p>
+    <ul>
+      <li><a href="github-connector.html">GitHub 커넥터(원격, 권장)</a>를 만들고 <a href="trigger-scan.html">On-demand 스캔</a>을 트리거, 또는</li>
+      <li><a href="cli-setup.html">Defender CLI</a>를 설정하고 <a href="install-run.html">로컬/CI-CD 스캔</a>을 실행.</li>
+    </ul>
+    <p>스캔이 성공적으로 완료되면 이니셔티브 대시보드에 점수·발견 항목이 채워집니다(원격 커넥터는 활성화 후 최대 1시간 뒤 스캔 가능).</p>
+
+    <h2>Exposure Management / Initiatives 페이지가 홈으로 리다이렉트돼요</h2>
+    <p>Global Admin으로 접속해도 페이지가 열리지 않고 홈으로 튕긴다면, 대개 <strong>권한 문제가 아니라 워크스페이스 프로비저닝 대기 상태</strong>입니다. 라이선스·구독이 방금 활성화된 신규 테넌트에서 흔합니다.</p>
+    <ul>
+      <li><strong>워크스페이스 초기화</strong> — <strong>Exposure Management &gt; Overview</strong>에 한 번 진입하면 워크스페이스 생성이 트리거됩니다. 이후 데이터가 채워지기까지 최대 72시간(보통 수 시간~1일) 걸릴 수 있고, Initiatives는 그 뒤에 정상화됩니다.</li>
+      <li><strong>라이선스 확인</strong> — 본인 계정에 적격 라이선스(Microsoft 365 E5 상당 또는 Defender 스위트)가 실제 할당돼 있는지 확인합니다.</li>
+      <li><strong>클라우드 종류</strong> — Exposure Management는 Public Cloud 전용입니다. Gov/Sovereign 클라우드에서는 제공되지 않습니다.</li>
+    </ul>
+
+    <h2>스캔을 실행했는데 이니셔티브에 결과가 안 보여요</h2>
+    <p>이니셔티브 페이지는 데이터 범위·신선도 규칙이 있습니다. 다음을 확인하세요.</p>
+    <ul>
+      <li><strong>90일 가시성 창</strong> — 최근 90일 내 완료된 스캔만 표시됩니다. 오래된 스캔은 자동 소멸합니다.</li>
+      <li><strong>성공한 스캔만 표시</strong> — Running·Failed·부분·취소된 스캔은 표시되지 않습니다.</li>
+      <li><strong>원격 스캔 지연</strong> — GitHub 커넥터는 활성화 후 최대 1시간 뒤부터 On-demand 스캔이 가능합니다.</li>
+      <li><strong>대기 큐 정리</strong> — 제출 후 72시간 내 시작되지 않은 대기 스캔은 자동 정리되어 실행되지 않을 수 있습니다.</li>
+    </ul>
+    <p>세부 규칙은 <a href="review-portal.html">Defender 포털 결과 검토</a>의 "데이터 범위 및 신선도"를 참고하세요.</p>
+
+    <h2>Foundry 온보딩 시 Validate가 실패해요</h2>
+    <p>Foundry 리소스의 네트워킹이 <strong>Selected networks and private endpoints</strong>로 설정된 경우, MDASH 공인 IP가 차단되어 검증이 실패합니다. <a href="foundry.html">Microsoft Foundry 연결</a>의 "MDASH 접근 허용" 절차로 필요한 IP를 허용하거나, 공용 접근을 <strong>All networks</strong>로 두세요. (이 설정은 Azure의 Foundry 리소스 방화벽이며, 사내망 방화벽과는 무관합니다.)</p>
+
+    <div class="pagenav">
+      <a href="faq.html"><span class="lbl">← 이전</span><br><strong>자주 묻는 질문 (FAQ)</strong></a>
+      <a class="nxt" href="audit-log.html"><span class="lbl">다음 →</span><br><strong>감사 로그 이벤트</strong></a>
+    </div>
+    <div class="footer">출처: <a href="https://learn.microsoft.com/en-us/security-exposure-management/ai-code-security-onboarding" target="_blank" rel="noopener">Getting Started with Codename MDASH</a> · <a href="https://learn.microsoft.com/en-us/security-exposure-management/mdash-initiative" target="_blank" rel="noopener">Codename MDASH initiative</a> · <a href="https://learn.microsoft.com/en-us/security-exposure-management/prerequisites" target="_blank" rel="noopener">Prerequisites</a>. 비공식 한글 요약본.</div>
+  </div>
+  </main>
+</div>
+</body>
+</html>
