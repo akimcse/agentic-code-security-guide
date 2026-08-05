@@ -1,3 +1,5 @@
+@import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css");
+
 :root {
   --bg: #f6f8fb;
   --surface: #ffffff;
@@ -24,7 +26,7 @@ html { scroll-behavior: smooth; }
 
 body {
   margin: 0;
-  font-family: "Segoe UI", "Malgun Gothic", "맑은 고딕", system-ui, sans-serif;
+  font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Malgun Gothic', sans-serif;
   background: var(--bg);
   color: var(--text);
   line-height: 1.7;
