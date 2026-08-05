@@ -10,7 +10,10 @@
 
   // Full table of contents, mirroring the official Microsoft Learn "Codename MDASH" TOC.
   var TOC = [
-    { group: "개요", items: [["index.html", "개요 (Overview)"]] },
+    { group: "개요", items: [
+      ["index.html", "개요 (Overview)"],
+      ["architecture.html", "아키텍처 (보안 설계)"]
+    ] },
     { group: "시작하기 (공통)", items: [
       ["foundry.html", "Foundry 설정"],
       ["defender-setup.html", "Defender 설정"]
@@ -28,16 +31,17 @@
       ["cicd.html", "CI/CD 예제"]
     ]},
     { group: "결과 검토 (공통)", items: [
-      ["review-portal.html", "Defender 포털 결과 검토"]
+      ["review-portal.html", "Defender 포털 결과 검토"],
+      ["audit-log.html", "감사 로그 이벤트"]
     ]},
     { group: "참조", items: [
       ["faq.html", "자주 묻는 질문 (FAQ)"],
-      ["troubleshooting.html", "트러블슈팅"],
-      ["audit-log.html", "감사 로그 이벤트"]
+      ["troubleshooting.html", "트러블슈팅"]
     ]},
     { group: "블로그", ext: true, items: [
       ["https://www.microsoft.com/en-us/security/blog/2026/05/12/defense-at-ai-speed-microsofts-new-multi-model-agentic-security-system-tops-leading-industry-benchmark/", "MDASH 공식 발표 (2026.05)"],
-      ["https://www.microsoft.com/en-us/security/blog/2026/06/17/beyond-the-benchmark-advancing-security-at-ai-speed/", "Beyond the benchmark (2026.06)"]
+      ["https://www.microsoft.com/en-us/security/blog/2026/06/17/beyond-the-benchmark-advancing-security-at-ai-speed/", "Beyond the benchmark (2026.06)"],
+      ["https://techcommunity.microsoft.com/blog/microsoftdefendercloudblog/built-to-protect-the-architecture-behind-codename-mdash/4541662", "Built to Protect (2026.07)"]
     ]}
   ];
 
