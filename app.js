@@ -15,8 +15,10 @@
       ["architecture.html", "아키텍처 (보안 설계)"]
     ] },
     { group: "시작하기 (공통)", items: [
+      ["defender-setup.html", "권한 설정 (RBAC)"],
+      ["onboarding-start.html", "온보딩 시작 (진입점·약관)"],
       ["foundry.html", "Foundry 설정"],
-      ["defender-setup.html", "Defender 설정"]
+      ["onboarding-complete.html", "온보딩 완료 (엔드포인트·저장)"]
     ]},
     { group: "원격 스캔 (GitHub 경로)", items: [
       ["github-connector.html", "GitHub 커넥터 생성"],

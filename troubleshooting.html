@@ -15,8 +15,19 @@
     <h1 class="page-title">트러블슈팅</h1>
     <p class="page-lead">MDASH 설정·스캔 과정에서 자주 마주치는 증상과 해결 방법을 정리했습니다.</p>
 
+    <h2>Exposure Management(노출 관리) 메뉴가 보이지 않습니다</h2>
+    <p>Entra ID의 <strong>Security Administrator</strong> 역할이 있음에도 Defender 포털 좌측 탐색 창에 <strong>Exposure Management</strong> 메뉴가 표시되지 않는 경우가 있습니다. Defender 통합 RBAC(URBAC)가 활성화된 테넌트에서는 해당 워크로드 접근이 <strong>Entra 전역 역할이 아닌 URBAC 권한</strong>으로 제어되기 때문입니다. 아래 항목을 확인하세요.</p>
+    <table>
+      <tr><th>확인 항목</th><th>조치</th></tr>
+      <tr><td>URBAC 커스텀 역할에 Exposure Management 권한 포함 여부</td><td><strong>Security posture &gt; Posture management &gt; Exposure Management</strong>(Read 이상)를 역할에 추가</td></tr>
+      <tr><td>데이터 소스 할당 여부</td><td>역할 할당 시 데이터 소스에 <strong>Microsoft Security Exposure Management</strong> 포함 확인</td></tr>
+      <tr><td>대상 사용자에게 역할 할당 여부</td><td><strong>Assign users and data sources</strong> 단계에서 해당 사용자/그룹이 할당되었는지 확인</td></tr>
+      <tr><td>권한 반영 지연</td><td>권한 변경 후 반영까지 시간이 걸릴 수 있으므로, 로그아웃 후 재로그인 또는 잠시 대기 후 재확인</td></tr>
+    </table>
+    <p>커스텀 역할 생성·권한 설정 절차는 <a href="defender-setup.html">권한 설정 (RBAC)</a>을 참고하세요.</p>
+
     <h2>Foundry 설정을 끝냈는데 MDASH 셋업(엔드포인트·키 입력) 창이 안 뜹니다</h2>
-    <p>Foundry 리소스 생성·모델 배포를 마쳤어도, <a href="defender-setup.html">Defender 설정</a>의 온보딩 단계 — <strong>Project endpoint·API key 입력 → Validate → Save</strong> — 를 진행할 <strong>셋업 창(팝업)이 뜨지 않는</strong> 경우가 있습니다. 이는 대개 <strong>브라우저 팝업 동작 차이</strong>로 인한 문제입니다.</p>
+    <p>Foundry 리소스 생성·모델 배포를 마쳤어도, <a href="onboarding-complete.html">온보딩 완료</a> 단계 — <strong>Project endpoint·API key 입력 → Validate → Save</strong> — 를 진행할 <strong>셋업 창(팝업)이 뜨지 않는</strong> 경우가 있습니다. 이는 대개 <strong>브라우저 팝업 동작 차이</strong>로 인한 문제입니다.</p>
     <div class="tip"><strong>해결 — Microsoft Edge에서 열기</strong> 실제 사례에서 <strong>Chrome에서는 MDASH 셋업 창이 뜨지 않았지만, Microsoft Edge로 접속하니 셋업 팝업이 정상적으로 표시</strong>됐습니다. 셋업 창이 안 뜨면 <strong>Edge에서 Defender 포털에 다시 접속</strong>해 온보딩을 진행하세요.</div>
     <p>추가로 확인할 점:</p>
     <ul>

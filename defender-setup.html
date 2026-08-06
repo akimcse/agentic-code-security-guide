@@ -12,50 +12,107 @@
   <aside class="sidebar" id="sidebar"></aside>
   <main class="main">
   <div class="content">
-    <h1 class="page-title">Defender 설정</h1>
-    <p class="page-lead">Defender 포털 쪽 온보딩 — 권한(RBAC)·커스텀 역할 생성과 이니셔티브 진입점을 다룹니다. 전체 설정 단계와 사전 요구사항은 <a href="index.html">개요</a>를 참고하세요.</p>
+    <h1 class="page-title">권한 설정 (RBAC)</h1>
+    <p class="page-lead">MDASH 프라이빗 프리뷰의 <strong>첫 단계(Step 0)</strong> — Defender 통합 RBAC로 Agentic 코드 보안에 필요한 <strong>커스텀 역할·권한</strong>을 부여합니다. 이 권한을 먼저 부여한 뒤 <a href="onboarding-start.html">온보딩 시작(진입점·약관 수락)</a>으로 넘어갑니다. 전체 설정 단계와 사전 요구사항은 <a href="index.html">개요</a>를 참고하세요.</p>
 
     <h2>권한 및 커스텀 역할 (RBAC)</h2>
-    <h3>커스텀 역할 생성 절차</h3>
-    <ol class="steps">
-      <li><a href="https://security.microsoft.com" target="_blank" rel="noopener">Microsoft Defender 포털</a> 로그인.</li>
-      <li>탐색 창에서 <strong>System &gt; Permissions</strong>.</li>
-      <li><strong>Microsoft Defender XDR</strong> 아래 <strong>Roles &gt; Create custom role</strong>.</li>
-      <li><strong>Basics</strong>에서 역할 이름·설명 입력.</li>
-      <li><strong>Choose permissions</strong>에서 <strong>Agentic code security &gt; AI Scan Security</strong>를 확장해 필요한 권한 설정.</li>
-      <li><strong>Apply → Next</strong>로 사용자·데이터 원본 할당 후 <strong>Submit</strong>.</li>
-    </ol>
+    <p>Microsoft Defender 통합 역할 기반 액세스 제어(<strong>Unified RBAC · URBAC</strong>)를 사용해 MDASH(Agentic code security)에 필요한 권한을 부여하는 <strong>커스텀 역할</strong>을 생성합니다. 이 작업은 Defender 포털에서의 권한 설정까지만 다루며, Foundry 리소스 생성·모델 배포 등 Azure 온보딩은 <a href="foundry.html">다음 단계</a>에서 진행합니다.</p>
 
-    <h3>Defender RBAC 권한 (최소 권한 부여)</h3>
-    <p><strong>Agentic Code Security</strong> 권한 그룹 안에서 각 사용자에게 필요한 권한만 부여하세요.</p>
+    <h3>사전 준비 사항</h3>
+    <ul>
+      <li><strong>Entra ID 역할</strong> — 커스텀 역할을 생성하고 권한을 설정하려면 <strong>전역 관리자(Global Administrator)</strong> 또는 <strong>보안 관리자(Security Administrator)</strong> 역할이 필요합니다.</li>
+      <li><strong>포털 접근</strong> — <a href="https://security.microsoft.com" target="_blank" rel="noopener">Microsoft Defender 포털</a> 접근 권한과 <strong>Defender 통합 RBAC(URBAC)가 활성화된 테넌트</strong>.</li>
+    </ul>
+    <div class="warn"><strong>⚠️ Exposure Management 메뉴가 보이지 않는 경우</strong> Defender 통합 RBAC가 활성화된 테넌트에서는 Entra ID의 <strong>Security Administrator</strong> 역할만으로는 <strong>Exposure Management(노출 관리)</strong> 메뉴가 표시되지 않을 수 있습니다. URBAC가 활성화되면 해당 워크로드 접근이 Entra 전역 역할이 아닌 <strong>URBAC 권한</strong>으로 제어되기 때문입니다. 이 경우 아래 절차에서 커스텀 역할에 <strong>Security posture &gt; Posture management &gt; Exposure Management</strong>(Read 이상) 권한을 반드시 포함해야 메뉴가 정상 표시됩니다.</div>
+
+    <h3>설정할 권한 항목</h3>
+    <p>커스텀 역할에 포함할 권한은 두 그룹으로 구성됩니다. 각 사용자에게 <strong>필요한 권한만</strong> 선택적으로 부여하세요.</p>
+    <p><strong>① Exposure Management 접근 권한</strong> — <code>Security posture &gt; Posture management</code></p>
     <table>
-      <tr><th>권한</th><th>용도</th></tr>
-      <tr><td><strong>Run scan (Manage)</strong></td><td>On-demand 또는 CLI 스캔 트리거</td></tr>
-      <tr><td><strong>Upload results (Manage)</strong></td><td>CLI 스캔 결과를 Defender에 업로드</td></tr>
-      <tr><td><strong>Scan results (Read)</strong></td><td>포털·이니셔티브에서 발견 항목 조회</td></tr>
-      <tr><td><strong>Scan results (Manage)</strong></td><td>발견 항목 분류·해제·관리</td></tr>
+      <tr><th>권한</th><th>레벨</th><th>용도</th></tr>
+      <tr><td><strong>Exposure Management</strong></td><td>Read</td><td>Exposure Management 메뉴·인사이트 조회 — <strong>메뉴 표시를 위해 필수</strong></td></tr>
+      <tr><td><strong>Exposure Management</strong></td><td>Manage</td><td>Exposure Management 인사이트 및 Secure Score 권장 사항 관리</td></tr>
+    </table>
+    <p><strong>② MDASH 운영 권한</strong> — <code>Agentic code security &gt; AI Scan Security</code></p>
+    <table>
+      <tr><th>권한</th><th>설명</th><th>용도</th></tr>
+      <tr><td><strong>Run scan (Manage)</strong></td><td>AI 스캔 실행</td><td>On-demand 또는 CLI 스캔 트리거</td></tr>
+      <tr><td><strong>Upload results (Manage)</strong></td><td>AI 스캔 결과 업로드</td><td>CLI 스캔 결과를 Defender에 업로드</td></tr>
+      <tr><td><strong>Scan results (Read)</strong></td><td>스캔 결과 조회</td><td>포털·이니셔티브에서 발견 항목 확인</td></tr>
+      <tr><td><strong>Scan results (Manage)</strong></td><td>스캔 결과 관리</td><td>발견 항목 분류(triage)·해제(dismiss)·관리</td></tr>
     </table>
 
-    <h2>진입점(Entry points)</h2>
-    <p>Defender 포털에서 다음 위치 중 하나로 온보딩 플로우를 시작합니다.</p>
-    <ul>
-      <li><strong>Exposure Management &gt; Overview</strong> → <strong>Agentic code security</strong> 선택</li>
-      <li><strong>Exposure Management &gt; Initiatives</strong> → <strong>Codename MDASH - Agentic code scanner</strong> 이니셔티브 선택</li>
-    </ul>
-
-    <h2>온보딩 플로우 — 포털에서 하는 작업</h2>
-    <p>진입점에서 온보딩 플로우를 시작하면 Defender 포털에서는 다음 <strong>두 가지</strong>를 수행합니다.</p>
+    <h3>커스텀 역할 생성 절차</h3>
     <ol class="steps">
-      <li><strong>약관 수락</strong> — 온보딩 플로우에서 약관을 검토하고 체크박스로 수락합니다. (수락해야 이후 <strong>Save</strong>가 활성화됩니다.)</li>
-      <li><strong>Defender 포털 온보딩</strong> — <a href="foundry.html">Foundry 설정</a>에서 복사한 <strong>Project endpoint</strong>(예: <code>https://your-foundry.azure.com</code>)와 <strong>API key</strong>를 입력 → <strong>Validate</strong>로 연결 검증 → <strong>Save</strong>로 온보딩 완료. (검증에 성공해야 저장할 수 있습니다.)</li>
+      <li><a href="https://security.microsoft.com" target="_blank" rel="noopener">Defender 포털</a>에 로그인합니다.</li>
+      <li>탐색 창에서 <strong>System &gt; Permissions</strong>를 선택합니다.</li>
     </ol>
-    <div class="note"><strong>참고</strong> 저장 후 실제 스캔을 실행하려면 <a href="github-connector.html">GitHub 커넥터(원격, 권장)</a> 또는 <a href="cli-setup.html">Defender CLI</a> 경로를 구성해야 합니다. GitHub 커넥터는 이 온보딩 전후 어느 시점에 만들어도 됩니다.</div>
+    <figure class="fig">
+      <img src="images/perm-01-system-permissions.png" alt="Defender 포털의 Permissions 화면에서 System &gt; Permissions 메뉴와 Microsoft Defender XDR의 Roles가 강조된 모습">
+      <figcaption><strong>System &gt; Permissions</strong>로 이동한 뒤, <strong>Microsoft Defender XDR</strong>의 <strong>Roles</strong>를 선택합니다.</figcaption>
+    </figure>
+    <ol class="steps" start="3" style="counter-reset: s 2">
+      <li><strong>Microsoft Defender XDR</strong> 아래에서 <strong>Roles &gt; Create custom role</strong>을 선택합니다.</li>
+    </ol>
+    <figure class="fig">
+      <img src="images/perm-02-create-custom-role.png" alt="Permissions and roles 화면에서 Create custom role 버튼이 강조된 모습">
+      <figcaption><strong>Permissions and roles</strong>에서 <strong>Create custom role</strong>로 커스텀 역할 생성을 시작합니다.</figcaption>
+    </figure>
+    <ol class="steps" start="4" style="counter-reset: s 3">
+      <li><strong>Basics</strong> 탭에서 역할 이름과 설명을 입력합니다. (예: <code>MDASH-Scan-Operator</code>)</li>
+    </ol>
+    <figure class="fig">
+      <img src="images/perm-03-basics.png" alt="커스텀 역할 만들기 마법사의 Basics 탭에서 역할 이름과 설명을 입력하는 화면">
+      <figcaption><strong>Basics</strong> 탭에서 역할 이름과 설명을 입력합니다.</figcaption>
+    </figure>
+    <ol class="steps" start="5" style="counter-reset: s 4">
+      <li><strong>Choose permissions</strong> 화면에서 먼저 <strong>Security posture &gt; Posture management</strong>를 확장한 뒤, <strong>Exposure Management</strong> 권한을 선택합니다. (메뉴 표시를 위해 최소 <strong>Read</strong> 필수, 관리가 필요하면 <strong>Manage</strong> 선택)</li>
+    </ol>
+    <figure class="fig">
+      <img src="images/perm-04-posture-exposure.png" alt="Choose permissions 화면에서 Security posture를 확장하고 Posture management의 Exposure Management (read/manage) 권한이 보이는 화면">
+      <figcaption><strong>Security posture</strong> → <strong>Posture management</strong>에서 <strong>Exposure Management (read)</strong>를 선택합니다. — Exposure Management 메뉴 표시를 위해 필수입니다.</figcaption>
+    </figure>
+    <ol class="steps" start="6" style="counter-reset: s 5">
+      <li>이어서 <strong>Agentic Code Security</strong> 권한 그룹을 확장합니다.</li>
+    </ol>
+    <figure class="fig">
+      <img src="images/perm-05-agentic-code-security.png" alt="Choose permissions 목록에서 'Agentic Code Security' 권한 그룹이 강조된 화면">
+      <figcaption><strong>Agentic Code Security</strong> 권한 그룹 — <em>Manages Agentic code security scanning, uploads, and results</em>.</figcaption>
+    </figure>
+    <ol class="steps" start="7" style="counter-reset: s 6">
+      <li><strong>AI Scan Security</strong> 아래에서 필요한 권한 수준을 설정합니다.
+        <ul>
+          <li>AI 스캔 실행 허용 → <strong>Run scan (Manage)</strong></li>
+          <li>AI 스캔 결과 업로드 허용 → <strong>Upload results (Manage)</strong></li>
+          <li>스캔 결과 조회 허용 → <strong>Scan results (Read)</strong></li>
+          <li>스캔 결과 관리 허용 → <strong>Scan results (Manage)</strong></li>
+        </ul>
+      </li>
+      <li>권한을 검토한 후 <strong>Apply</strong>를 선택합니다.</li>
+      <li><strong>Next</strong>를 선택하여 <strong>Assign users and data sources</strong>로 이동합니다.</li>
+      <li><strong>Add assignment</strong>을 선택하고 사용자·그룹·데이터 소스를 구성합니다. 데이터 소스에 <strong>Microsoft Security Exposure Management</strong>가 포함되어 있는지 확인하고, <strong>Assignment name</strong>과 <strong>Employees</strong>(권한부여 사용자)를 지정합니다.</li>
+    </ol>
+    <figure class="fig">
+      <img src="images/perm-06-assign-users.png" alt="Add assignment 패널에서 Assignment name, Employees, 그리고 데이터 소스에 Microsoft Security Exposure Management가 포함된 화면">
+      <figcaption><strong>Add assignment</strong>에서 <strong>Employees</strong>와 <strong>데이터 소스(Microsoft Security Exposure Management 포함)</strong>를 지정합니다.</figcaption>
+    </figure>
+    <ol class="steps" start="11" style="counter-reset: s 10">
+      <li><strong>Add</strong>를 선택하고 할당 내용을 검토한 뒤 <strong>Next</strong>를 선택합니다.</li>
+      <li>역할 세부 정보를 검토하고 <strong>Submit</strong>을 선택하여 역할 생성을 완료합니다.</li>
+    </ol>
+    <figure class="fig">
+      <img src="images/perm-07-review-submit.png" alt="Review and finish 화면에서 Basics, Permissions, Assignments 요약을 검토하고 Submit 버튼이 보이는 화면">
+      <figcaption><strong>Review and finish</strong>에서 설정을 검토하고 <strong>Submit</strong>으로 역할 생성을 완료합니다.</figcaption>
+    </figure>
+    <div class="note"><strong>권한 부여 원칙</strong> 각 사용자에게 필요한 권한만 부여하세요. 예를 들어 스캔을 실행만 하는 담당자에게는 <strong>Run scan (Manage)</strong>, 결과만 확인하는 담당자에게는 <strong>Scan results (Read)</strong>만 부여합니다.</div>
+
+    <div class="note"><strong>다음 단계</strong> 권한 설정을 마쳤으면 <a href="onboarding-start.html">온보딩 시작</a>으로 넘어가 이니셔티브 진입점에서 온보딩 플로우를 시작하고 약관을 수락합니다. 이후 <a href="foundry.html">Foundry 설정</a>(리소스·모델 배포)을 거쳐 <a href="onboarding-complete.html">온보딩 완료</a>(엔드포인트·Validate·Save)로 마무리합니다.</div>
 
     <div class="pagenav">
-      <a href="foundry.html"><span class="lbl">← 이전</span><br><strong>Foundry 설정</strong></a>
-      <a class="nxt" href="github-connector.html"><span class="lbl">다음 →</span><br><strong>GitHub 커넥터 생성</strong></a>
+      <a href="architecture.html"><span class="lbl">← 이전</span><br><strong>아키텍처 (보안 설계)</strong></a>
+      <a class="nxt" href="onboarding-start.html"><span class="lbl">다음 →</span><br><strong>온보딩 시작 (진입점·약관)</strong></a>
     </div>
-    <div class="footer">출처: <a href="https://learn.microsoft.com/en-us/security-exposure-management/ai-code-security-onboarding" target="_blank" rel="noopener">Microsoft Learn — Getting Started with Codename MDASH</a>. 비공식 한글 요약본.</div>
+    <div class="footer">출처: <a href="https://learn.microsoft.com/en-us/security-exposure-management/ai-code-security-onboarding" target="_blank" rel="noopener">Getting Started with Codename MDASH</a> · <a href="https://learn.microsoft.com/en-us/defender-xdr/create-custom-rbac-roles" target="_blank" rel="noopener">Create custom roles with Microsoft Defender unified RBAC</a> · <a href="https://learn.microsoft.com/en-us/defender-xdr/manage-rbac-permissions" target="_blank" rel="noopener">Permissions in Microsoft Defender unified RBAC</a>. 비공식 한글 요약본.</div>
   </div>
   </main>
 </div>

@@ -48,16 +48,6 @@
       <tr><td>포털 통합</td><td>결과가 Microsoft Security Exposure Management에 게시되어 추적·수정.</td></tr>
     </table>
 
-    <h2>MDASH 전체 설정 단계 (End-to-end)</h2>
-    <p>아래 5단계는 온보딩만이 아니라 <strong>MDASH 프라이빗 프리뷰의 셋업부터 첫 스캔·결과 검토까지 아우르는 전체 흐름</strong>입니다.</p>
-    <ol class="steps">
-      <li><strong>약관 수락</strong> — 약관 검토 후 체크박스로 수락(수락해야 Save 가능).</li>
-      <li><strong>Microsoft Foundry 리소스 연결</strong> — <a href="foundry.html">Foundry 연결</a> 절차 수행.</li>
-      <li><strong>Defender 포털 온보딩</strong> — <strong>Project endpoint</strong>·<strong>API key</strong> 입력 → <strong>Validate</strong> → <strong>Save</strong> (검증 성공해야 저장 가능).</li>
-      <li><strong>AI 스캔 설정</strong> — <a href="github-connector.html">GitHub 커넥터(원격, 권장)</a> 또는 <a href="cli-setup.html">Defender CLI</a> 구성.</li>
-      <li><strong>권장 사항 검토</strong> — 스캔 실행 후 <a href="review-portal.html">포털</a>에서 발견 항목 확인.</li>
-    </ol>
-
     <h2>사전 요구사항 체크리스트</h2>
     <ul>
       <li>Microsoft Entra ID에서 <strong>전역 관리자</strong> 또는 <strong>보안 관리자</strong> 역할.</li>
@@ -68,7 +58,19 @@
       <li>다음 AI 스캔 경로 중 최소 하나 (나머지는 나중에 추가 가능): <a href="github-connector.html">원격 스캔(GitHub 커넥터, 권장)</a> 또는 <a href="cli-setup.html">Defender CLI</a>.</li>
       <li>아웃바운드 제한 시 <a href="install-run.html">허용 목록</a> 도메인 허용.</li>
       <li>Defender 포털에서 <strong>Exposure Management</strong>·<strong>Initiatives</strong>를 열 권한, 그리고 Foundry 프로젝트 엔드포인트·API 키.</li>
+      <li><strong>Defender 통합 RBAC 권한</strong> 부여 — 아래 <em>권한 할당</em> 단계 참조.</li>
     </ul>
+
+    <h2>MDASH 프라이빗 프리뷰 전체 과정 (End-to-end)</h2>
+    <p>MDASH 프라이빗 프리뷰는 권한 부여부터 첫 스캔·결과 검토까지 다음 <strong>6단계(Step 0–5)</strong>로 진행됩니다. 각 단계의 스크린샷과 상세 절차는 연결된 세부 페이지를 참고하세요. (아래 원형 번호가 Step 0–5에 해당합니다.)</p>
+    <ol class="steps" style="counter-reset: s -1">
+      <li><strong>권한 부여 (Assign permissions)</strong> — Defender 통합 RBAC로 커스텀 역할을 만들고 <strong>Agentic Code Security</strong> 권한을 부여합니다. → <a href="defender-setup.html">권한 설정 (RBAC)</a></li>
+      <li><strong>약관 수락</strong> — 이니셔티브 <strong>진입점</strong>(Overview 또는 Initiatives)에서 온보딩 플로우를 시작하고 약관을 수락합니다(수락해야 Save 활성화). → <a href="onboarding-start.html">온보딩 시작 (진입점·약관)</a></li>
+      <li><strong>Microsoft Foundry 리소스 연결</strong> — 전용 Foundry 리소스를 만들고 필수 모델을 배포합니다. → <a href="foundry.html">Foundry 설정</a></li>
+      <li><strong>Defender 포털 온보딩</strong> — <strong>Project endpoint</strong>·<strong>API key</strong> 입력 → <strong>Validate</strong> → <strong>Save</strong>(검증 성공해야 저장 가능). → <a href="onboarding-complete.html">온보딩 완료 (엔드포인트·저장)</a></li>
+      <li><strong>AI 스캔 설정</strong> — <a href="github-connector.html">GitHub 커넥터(원격, 권장)</a> 또는 <a href="cli-setup.html">Defender CLI</a>를 구성합니다(이 단계를 마쳐야 스캔이 실행됩니다).</li>
+      <li><strong>권장 사항 검토</strong> — 스캔 실행 후 <a href="review-portal.html">포털</a>·이니셔티브에서 발견 항목을 확인합니다.</li>
+    </ol>
 
     <div class="pagenav">
       <span></span>
