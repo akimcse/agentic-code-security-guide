@@ -24,15 +24,15 @@
       ["github-connector.html", "GitHub 커넥터 생성"],
       ["trigger-scan.html", "On-demand 스캔 트리거"]
     ]},
-    { group: "로컬·CI/CD 스캔 (CLI 경로)", items: [
+    { group: "로컬 스캔 (CLI 경로)", items: [
       ["cli-setup.html", "Defender CLI 설정"],
       ["admin-consent.html", "관리자 동의 스크립트", true],
       ["install-run.html", "설치 및 실행"],
       ["review-terminal.html", "터미널 결과 검토"],
-      ["auto-fix.html", "취약점 자동 수정"],
-      ["cicd.html", "CI/CD 예제"]
+      ["cicd.html", "CI/CD 예제 (GitHub Actions)"]
     ]},
     { group: "결과 검토 (공통)", items: [
+      ["auto-fix.html", "취약점 자동 수정 (GitHub Copilot CLI)"],
       ["review-portal.html", "Defender 포털 결과 검토"],
       ["audit-log.html", "감사 로그 이벤트"]
     ]},
