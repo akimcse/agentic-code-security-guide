@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ADO 커넥터 프로비저닝 스크립트 · MDASH Private Preview 가이드</title>
+<link rel="stylesheet" href="styles.css">
+<script src="app.js"></script>
+</head>
+<body>
+<div class="layout">
+  <aside class="sidebar" id="sidebar"></aside>
+  <main class="main">
+  <div class="content">
+    <h1 class="page-title">ADO 커넥터 프로비저닝 스크립트</h1>
+    <p class="page-lead"><code>Grant-DefenderConsent.ps1</code> PowerShell 스크립트로 <strong>Microsoft Defender Code</strong> 서비스 주체를 프로비저닝하고, <a href="ado-connector.html">Azure DevOps 커넥터</a>에 필요한 테넌트 전역 관리자 동의를 부여합니다. Microsoft 365 E5 라이선스가 없거나 ADO 조직 테넌트가 Defender 테넌트와 다른 경우, 커넥터 생성 <strong>전에</strong> 이 스크립트를 실행합니다.</p>
+
+    <div class="note"><strong>GitHub/CLI 경로와 구분</strong> 이 스크립트(<code>Grant-DefenderConsent.ps1</code>)는 Azure DevOps 커넥터 전용입니다. GitHub 커넥터·CLI 경로의 <a href="admin-consent.html">관리자 동의 스크립트</a>(<code>Grant-DefenderAdminConsent.ps1</code>)와는 파일·용도가 다릅니다.</div>
+
+    <h2>사전 준비</h2>
+    <ul>
+      <li>대상 테넌트의 <strong>Global Administrator</strong> 권한.</li>
+      <li>Azure CLI 설치 및 로그인 (<code>winget install -e --id Microsoft.AzureCLI</code>).</li>
+      <li>공식 문서에서 <code>Grant-DefenderConsent.ps1</code> 스크립트 전문을 복사해 로컬에 저장.</li>
+    </ul>
+
+    <h2>실행 모드</h2>
+    <p>스크립트는 <code>-TenantId</code>(필수)와 함께 <code>[switch]$ProvisionOnly</code>·<code>[switch]$VerifyToken</code> 스위치로 세 가지 모드를 지원합니다.</p>
+    <table>
+      <tr><th>모드</th><th>명령</th><th>동작</th></tr>
+      <tr><td>프로비저닝만</td><td><code>.\Grant-DefenderConsent.ps1 -TenantId &lt;tenant-guid&gt; -ProvisionOnly</code></td><td>로그인 및 서비스 주체 생성만 수행. 동의 부여·토큰 검증은 건너뜀.</td></tr>
+      <tr><td>프로비저닝 + 동의 (기본값)</td><td><code>.\Grant-DefenderConsent.ps1 -TenantId &lt;tenant-guid&gt;</code></td><td>로그인 → 서비스 주체 생성 → 전역 관리자 동의 부여.</td></tr>
+      <tr><td>프로비저닝 + 동의 + 토큰 검증</td><td><code>.\Grant-DefenderConsent.ps1 -TenantId &lt;tenant-guid&gt; -VerifyToken</code></td><td>위 전체 + 토큰 획득으로 동의 검증.</td></tr>
+    </table>
+    <div class="note"><strong>참고</strong> <code>-ProvisionOnly</code>와 <code>-VerifyToken</code>을 동시에 지정하면 <code>-VerifyToken</code>은 무시되며 경고가 표시됩니다.</div>
+
+    <h2>실행 후 확인</h2>
+    <p>실행이 끝나면 Entra ID &gt; <strong>Enterprise applications</strong>에서 <strong>Microsoft Defender Code</strong>가 프로비저닝됐는지 확인한 뒤, <a href="ado-connector.html">Azure DevOps 커넥터 생성</a>을 진행합니다.</p>
+
+    <div class="warn"><strong>주의</strong> 이 스크립트는 테넌트 전역 관리자 동의를 부여합니다. 실행 전 반드시 <a href="https://learn.microsoft.com/en-us/security-exposure-management/microsoft-defender-code-script-azure-devops-connector" target="_blank" rel="noopener">공식 문서</a>에서 스크립트 내용을 검토하세요.</div>
+
+    <div class="pagenav">
+      <a href="ado-connector.html"><span class="lbl">← 이전</span><br><strong>Azure DevOps 커넥터 생성</strong></a>
+      <a class="nxt" href="trigger-scan.html"><span class="lbl">다음 →</span><br><strong>On-demand 스캔 트리거</strong></a>
+    </div>
+    <div class="footer">출처: <a href="https://learn.microsoft.com/en-us/security-exposure-management/microsoft-defender-code-script-azure-devops-connector" target="_blank" rel="noopener">Microsoft Learn — Microsoft Defender Code script for Azure DevOps connector</a>. 비공식 한글 요약본.</div>
+  </div>
+  </main>
+</div>
+</body>
+</html>

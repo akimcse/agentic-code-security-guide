@@ -36,7 +36,7 @@
     <ul>
       <li>GitHub Copilot CLI 또는 Claude CLI 설치 (없으면 <a href="https://aka.ms/copilot" target="_blank" rel="noopener">aka.ms/copilot</a>).</li>
       <li>테넌트에 Agentic 코드 보안 온보딩 완료 (<a href="onboarding-complete.html">온보딩 완료</a>).</li>
-      <li>Defender 통합 RBAC의 <strong>Scan results</strong> 권한 <strong>Read</strong> 수준.</li>
+      <li>Defender 통합 RBAC의 <strong>Scan results</strong> 권한 <strong>Read</strong> 수준. 자세한 내용은 <a href="https://learn.microsoft.com/en-us/defender-xdr/custom-permissions-details#security-posture--ai-code-scan" target="_blank" rel="noopener">Security posture – AI code scan</a>을 참조하세요.</li>
       <li>온보딩 중 CLI 바이너리 다운로드용 인터넷 연결.</li>
     </ul>
 
@@ -47,7 +47,7 @@
     <h3>Claude CLI</h3>
     <p>아직 Claude 마켓플레이스에 게시되지 않아 GitHub 소스에서 수동 설치합니다.</p>
     <ol class="steps">
-      <li><code>onboard-defender-cli</code> 스킬을 <code>github.com/microsoft/security-devops-common/…/skills/onboard-defender-cli</code>에서 설치. Claude가 <code>SKILL.md</code>·지원 파일을 가져와 스킬 추가.</li>
+      <li><code>onboard-defender-cli</code> 스킬을 <a href="https://github.com/microsoft/security-devops-common/tree/main/plugin/defender-code-security/skills/onboard-defender-cli" target="_blank" rel="noopener">github.com/microsoft/security-devops-common/tree/main/plugin/defender-code-security/skills/onboard-defender-cli</a>에서 설치. Claude가 <code>SKILL.md</code>·지원 파일을 가져와 스킬 추가.</li>
       <li>에이전트에게 온보딩 요청 — <code>Onboard me to Defender CLI</code> (Copilot CLI라면 <code>copilot -i /defender-code-security:onboard-defender-cli</code>).</li>
       <li>에이전트가 바이너리를 <code>~/.mdc</code>에 다운로드, Authenticode 서명 검증 후 PATH에 자동 추가.</li>
       <li>테넌트가 여러 개면 프롬프트에서 선택.</li>

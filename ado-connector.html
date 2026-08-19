@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Azure DevOps 커넥터 생성 · MDASH Private Preview 가이드</title>
+<link rel="stylesheet" href="styles.css">
+<script src="app.js"></script>
+</head>
+<body>
+<div class="layout">
+  <aside class="sidebar" id="sidebar"></aside>
+  <main class="main">
+  <div class="content">
+    <h1 class="page-title">Azure DevOps 커넥터 생성</h1>
+    <p class="page-lead">소스 코드 관리(SCM)로 <strong>Azure DevOps(ADO)</strong>를 쓰는 조직의 권장 온보딩 경로입니다. ADO 조직을 연결해 저장소를 온보딩하면, 로컬 설치 없이 포털에서 원격 On-demand 스캔을 트리거할 수 있습니다. 흐름은 <a href="github-connector.html">GitHub 커넥터</a>와 거의 동일하며, 사전 권한·인증 방식만 ADO에 맞게 다릅니다.</p>
+
+    <h2>사전 요구사항</h2>
+    <p>커넥터를 승인·재승인하려면 아래 권한이 <strong>모두</strong> 필요합니다.</p>
+    <ul>
+      <li>Defender 포털 접근 — 최소 <strong>Security Administrator</strong> (Entra ID).</li>
+      <li>연결할 각 ADO 조직에서 <strong>Project Collection Administrator</strong> 역할 (<strong>Organization Settings &gt; Security &gt; Permissions</strong>).</li>
+      <li>각 ADO 조직에서 <strong>Basic</strong> 또는 <strong>Basic + Test Plans</strong> 액세스 레벨 (<strong>Organization Settings &gt; Users</strong>). <strong>Stakeholder</strong> 레벨은 불가.</li>
+    </ul>
+    <div class="note"><strong>Microsoft Defender Code 앱 프로비저닝</strong> 테넌트에 Microsoft Defender Code 앱이 프로비저닝돼 있어야 합니다. 다음 <strong>두 조건을 모두</strong> 충족하면 프로비저닝 스크립트를 생략할 수 있습니다. ① 조직이 <strong>Microsoft 365 E5</strong> 라이선스 보유(MDASH 온보딩 중 앱 자동 프로비저닝), ② ADO 조직 테넌트가 Defender 테넌트와 동일. 그 외의 경우 커넥터 생성 전에 <a href="ado-provisioning-script.html">프로비저닝 스크립트</a>를 먼저 실행하세요.</div>
+    <div class="warn"><strong>주의</strong> 동일 ADO 조직이 이미 Azure 포털의 Azure DevOps 커넥터로 연결돼 있다면, Defender 포털로 연결하기 전에 Azure 포털 커넥터를 먼저 해제해야 합니다. 해제 시 그 커넥터에 연결된 Defender for DevOps Security 기능은 더 이상 사용할 수 없습니다.</div>
+
+    <h2>1단계: 테넌트 준비</h2>
+    <p>커넥터 생성 흐름에 접근하려면 테넌트에 Cloud Security가 준비돼 있어야 합니다. 이미 활성화됐다면 <strong>Prepare my tenant</strong> 옵션이 보이지 않고 바로 진행됩니다.</p>
+    <ol class="steps">
+      <li><strong>Cloud security &gt; Overview</strong> 이동.</li>
+      <li><strong>Prepare my tenant</strong> 선택.</li>
+      <li>테넌트 준비 확인.</li>
+    </ol>
+
+    <h2>2단계: 커넥터 마법사 열기</h2>
+    <ol class="steps">
+      <li>Defender 포털에서 <strong>MDASH Initiative &gt; Settings</strong>로 이동. (이니셔티브 접근은 <a href="onboarding-start.html">온보딩 시작의 진입점</a> 참조.)</li>
+      <li><strong>Create and Manage connectors</strong> 선택 → <strong>Cloud Security Connectors</strong> 페이지로 이동됨.</li>
+      <li><strong>Connectors</strong> 탭에서 목록의 Azure DevOps 커넥터 선택.</li>
+      <li>(선택) 커넥터 이름 입력. 비우면 기본 이름 자동 부여. → <strong>Next</strong>.</li>
+    </ol>
+
+    <h2>3단계: 접근·권한 구성</h2>
+    <table>
+      <tr><th>권한 계층</th><th>설명</th></tr>
+      <tr><td><strong>Read</strong> (기본·제거 불가)</td><td>변경 없이 저장소를 스캔하고 보안 이슈를 식별. 소스코드·저장소 메타데이터, 파이프라인·서비스 연결, 연결된 조직·프로젝트의 보안 시그널 읽기.</td></tr>
+      <tr><td><strong>Write</strong> (선택)</td><td>AI 생성 수정본을 담은 PR 생성, 교정(remediation) 과정에서 저장소 콘텐츠·메타데이터 업데이트 등. 스캐닝·탐색만 하려면 Read로 충분.</td></tr>
+    </table>
+    <p>권한 선택을 검토하고 <strong>Next</strong>.</p>
+
+    <h2>4단계: 승인 및 구성 (Authorize)</h2>
+    <p>DevOps security 앱에 ADO 리소스 접근 권한을 부여하고, 온보딩할 조직을 선택합니다.</p>
+    <ol class="steps">
+      <li><strong>Authorize Entra ID</strong> 선택.</li>
+      <li>로그인 대화 상자에서 대상 ADO 조직의 <strong>Project Collection Administrator</strong> 계정을 선택.</li>
+      <li>승인 성공 시, 해당 계정에서 발견된 모든 ADO 조직이 프로젝트 수와 함께 나열됨.</li>
+      <li>온보딩할 조직을 선택하고 <strong>Next</strong>.</li>
+    </ol>
+    <div class="note"><strong>참고</strong> 발견된 조직 중 일부만 선택할 수 있습니다. 선택하지 않은 조직은 무시되며, 나중에 커넥터를 편집해 추가할 수 있습니다.</div>
+
+    <h2>5단계: 검토 및 활성화</h2>
+    <p><strong>Review and finish</strong> 페이지에서 커넥터 이름, 온보딩될 ADO 조직 목록(프로젝트 수 포함), 접근·권한 범위(Read 및 선택 시 Write)를 확인하고 <strong>Activate</strong>.</p>
+    <div class="note"><strong>참고</strong> 활성화 후 온보딩된 저장소에 대해 On-demand 스캔을 트리거할 수 있게 되기까지 <strong>최대 1시간</strong>이 걸릴 수 있습니다.</div>
+
+    <div class="pagenav">
+      <a href="github-connector.html"><span class="lbl">← 이전</span><br><strong>GitHub 커넥터 생성</strong></a>
+      <a class="nxt" href="trigger-scan.html"><span class="lbl">다음 →</span><br><strong>On-demand 스캔 트리거</strong></a>
+    </div>
+    <div class="footer">출처: <a href="https://learn.microsoft.com/en-us/security-exposure-management/create-azure-devops-connector" target="_blank" rel="noopener">Microsoft Learn — Create an Azure DevOps connector</a>. 비공식 한글 요약본.</div>
+  </div>
+  </main>
+</div>
+</body>
+</html>

@@ -41,6 +41,7 @@
       <tr><td><strong>Scan results (Read)</strong></td><td>스캔 결과 조회</td><td>포털·이니셔티브에서 발견 항목 확인</td></tr>
       <tr><td><strong>Scan results (Manage)</strong></td><td>스캔 결과 관리</td><td>발견 항목 분류(triage)·해제(dismiss)·관리</td></tr>
     </table>
+    <div class="note"><strong>참고</strong> <strong>Scan results (Read)</strong> 권한만으로는 Defender 포털 자체에 대한 접근 권한이 부여되지 않습니다. 포털에 접근하려면 <strong>Exposure Management (Read)</strong> 등 추가 권한을 함께 할당해야 합니다. 이러한 권한은 할당된 범위 내에서 MDASH 데이터 외의 다른 데이터에도 접근을 허용할 수 있습니다.</div>
 
     <h3>커스텀 역할 생성 절차</h3>
     <ol class="steps">
@@ -90,7 +91,7 @@
       </li>
       <li>권한을 검토한 후 <strong>Apply</strong>를 선택합니다.</li>
       <li><strong>Next</strong>를 선택하여 <strong>Assign users and data sources</strong>로 이동합니다.</li>
-      <li><strong>Add assignment</strong>을 선택하고 사용자·그룹·데이터 소스를 구성합니다. 데이터 소스에 <strong>Microsoft Security Exposure Management</strong>가 포함되어 있는지 확인하고, <strong>Assignment name</strong>과 <strong>Employees</strong>(권한부여 사용자)를 지정합니다.</li>
+      <li><strong>Add assignment</strong>을 선택하고 사용자·그룹·데이터 소스를 구성합니다. <strong>데이터 소스</strong>에서 <strong>Microsoft Defender for Cloud</strong>와 <strong>Microsoft Security Exposure Management</strong>가 <strong>모두</strong> 선택된 상태로 유지되어 있는지 확인하고(둘 중 하나라도 해제하면 역할 할당이 올바르게 작동하지 않습니다), <strong>Assignment name</strong>과 <strong>Employees</strong>(권한부여 사용자)를 지정합니다.</li>
     </ol>
     <figure class="fig">
       <img src="images/perm-06-assign-users.png" alt="Add assignment 패널에서 Assignment name, Employees, 그리고 데이터 소스에 Microsoft Security Exposure Management가 포함된 화면">

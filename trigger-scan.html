@@ -13,10 +13,10 @@
   <main class="main">
   <div class="content">
     <h1 class="page-title">On-demand 에이전트 스캔 트리거 (포털)</h1>
-    <p class="page-lead">GitHub 커넥터가 활성화되면 온보딩된 저장소에 대해 원격 On-demand 스캔을 실행할 수 있습니다. (활성화 후 최대 1시간 후 사용 가능)</p>
+    <p class="page-lead">SCM 커넥터(<a href="github-connector.html">GitHub</a> 또는 <a href="ado-connector.html">Azure DevOps</a>)가 활성화되면 온보딩된 저장소에 대해 원격 On-demand 스캔을 실행할 수 있습니다. (활성화 후 최대 1시간 후 사용 가능)</p>
 
     <h2>사전 요구사항</h2>
-    <ul><li>생성·활성화된 <a href="github-connector.html">GitHub 커넥터</a>.</li></ul>
+    <ul><li>생성·활성화된 SCM 커넥터 — <a href="github-connector.html">GitHub 커넥터</a> 또는 <a href="ado-connector.html">Azure DevOps 커넥터</a>.</li></ul>
 
     <h2>1단계: Manage scans 열기</h2>
     <ol class="steps">
@@ -29,7 +29,7 @@
     <p>측면 패널에 활성화된 SCM 커넥터로 발견된 모든 저장소가 표시됩니다. 각 저장소별로:</p>
     <ul>
       <li>저장소 이름 · 저장소 크기 · 조직명</li>
-      <li><strong>SCM 유형</strong> (Source Control Management 플랫폼 종류, 예: GitHub)</li>
+      <li><strong>SCM 유형</strong> (Source Control Management 플랫폼 종류, 예: GitHub · Azure DevOps)</li>
       <li>스캔 상태 — 마지막 스캔 · 마지막 스캔의 소비 토큰</li>
     </ul>
     <p>저장소 크기와 소비 토큰 신호는 스캔 전에 영향도를 예측하는 데 도움이 됩니다.</p>
@@ -38,13 +38,19 @@
     <ol class="steps">
       <li>스캔할 저장소 선택.</li>
       <li><strong>Start scan</strong> 선택.</li>
-      <li>나타나는 대화 상자에서 확인.</li>
+      <li>확인 대화 상자에서 <strong>이 스캔에만 적용될 스캔 프로필</strong>을 선택 → <strong>Scan repo</strong>.
+        <ul>
+          <li>기본값 <strong>GPT-General profile</strong> 유지, 또는 <strong>MAI-Augmented profile (Preview)</strong> 선택.</li>
+          <li>선택은 <strong>해당 스캔에만</strong> 적용됩니다.</li>
+          <li>필수 모델이 배포되지 않은 프로필은 인라인 오류가 표시되며 선택할 수 없습니다. 각 프로필에 필요한 모델은 <a href="foundry.html">Foundry 설정 &gt; 필수 모델 배포</a>를 참고하세요.</li>
+        </ul>
+      </li>
     </ol>
     <div class="note"><strong>큐 제한</strong> 테넌트에 포털·CLI를 합쳐 이미 <strong>10개의 대기(queued) 스캔</strong>이 있으면 경고가 표시됩니다. 그래도 제출은 가능합니다. 제출 후 <strong>72시간 내에 실행이 시작되지 않은 대기 스캔은 자동 정리</strong>되므로 일부 대기 스캔은 실행되지 않을 수 있습니다.</div>
     <p>스캔 시작 시 알림이 뜨고, 새 스캔이 <strong>Scans</strong> 탭에 나타나 수명주기를 진행합니다.</p>
 
     <div class="pagenav">
-      <a href="github-connector.html"><span class="lbl">← 이전</span><br><strong>GitHub 커넥터 생성</strong></a>
+      <a href="ado-connector.html"><span class="lbl">← 이전</span><br><strong>Azure DevOps 커넥터 생성</strong></a>
       <a class="nxt" href="cli-setup.html"><span class="lbl">다음 →</span><br><strong>Defender CLI 설정</strong></a>
     </div>
     <div class="footer">출처: <a href="https://learn.microsoft.com/en-us/security-exposure-management/trigger-on-demand-scan" target="_blank" rel="noopener">Microsoft Learn — Trigger an on-demand agentic scan</a>. 비공식 한글 요약본.</div>

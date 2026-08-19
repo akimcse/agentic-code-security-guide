@@ -17,12 +17,14 @@
 
     <h2>사전 요구사항</h2>
     <ul>
-      <li>Defender CLI 인증 완료 (<a href="cli-setup.html">Defender CLI 설정</a>).</li>
+      <li>Defender CLI 인증 완료 (<a href="cli-setup.html">Defender CLI 설정</a>). CI/CD 등 비대화형 자동화에는 <strong>앱 기반 인증</strong>, 로컬 터미널 스캔에는 <strong>대화형 인증</strong>을 사용합니다.</li>
+      <li>테넌트 환경 변수 설정 (예: <code>DEFENDER_ASPM_TENANT_ID</code>). 필요한 변수는 인증 방법에 따라 다릅니다.</li>
       <li>스캔할 저장소의 로컬 clone.</li>
     </ul>
 
     <h2>네트워크 허용 목록(Allow list)</h2>
-    <p>CLI를 실행하는 머신 또는 파이프라인에서 다음 도메인에 접근할 수 있어야 합니다. 아웃바운드가 제한된 환경이라면 아래를 먼저 허용하세요.</p>
+    <p><strong>Defender CLI를 실행하는 머신 또는 파이프라인</strong>에서 다음 도메인에 접근할 수 있어야 합니다. 아웃바운드가 제한된 환경이라면 아래를 먼저 허용하세요.</p>
+    <div class="note"><strong>원격 스캔에는 불필요</strong> 이 허용 목록은 로컬 CLI·CI/CD 스캔 전용입니다. <a href="github-connector.html">GitHub</a>·<a href="ado-connector.html">Azure DevOps</a> 커넥터 기반 <strong>원격 스캔</strong>은 클라우드 내부(Defender ↔ SCM ↔ Foundry)에서 처리되므로 사내망 아웃바운드 허용이 필요 없습니다. 원격 경로의 네트워킹은 <a href="foundry.html">Foundry 리소스 방화벽 IP 허용</a>만 해당합니다.</div>
     <table>
       <tr><th>범주</th><th>도메인</th></tr>
       <tr><td><code>defender scan ai-scan</code> 필수</td><td class="mono-list">*.cli.dfd.security.azure.com · *.blob.core.windows.net · *.azurefd.net · *.login.microsoftonline.com · *.graph.microsoft.com</td></tr>
@@ -51,9 +53,10 @@ xattr -d com.apple.quarantine Defender 2>/dev/null || true</code></pre>
     <p>그 밖에 Linux arm64, macOS Intel(osx-x64) 바이너리도 같은 경로에서 제공됩니다.</p>
 
     <h2>스캔</h2>
-    <p>제출과 결과 대기를 한 명령으로:</p>
-    <pre><code>defender.exe scan ai-scan submit &lt;TARGET_SOURCE_DIRECTORY&gt;</code></pre>
-    <p>코드를 제출하고 결과를 <strong>대기</strong>합니다. 완료되면 결과가 대상 디렉터리에 다운로드되고 <a href="https://security.microsoft.com" target="_blank" rel="noopener">Defender 포털</a>에서도 확인 가능합니다.</p>
+    <p>스캔은 <strong>기본적으로 비동기</strong>로 실행됩니다. 스캔을 제출하면 CLI는 완료를 기다리지 않고 즉시 종료되며 <strong>Job ID</strong>를 반환합니다. Job ID는 이후 결과 아티팩트 다운로드·작업 취소·완료 대기·상태 조회에 사용하는 영구 참조입니다.</p>
+    <p>아래 명령에서 <code>&lt;TARGET_SOURCE&gt;</code>를 소스 코드 디렉터리 경로(예: <code>my-code\project1</code>)로 바꿉니다. 코드 디렉터리 안에서 실행하는 경우 <code>.</code>을 사용합니다. (Windows는 <code>.\defender.exe</code>, macOS/Linux는 <code>./defender</code>로 실행합니다.)</p>
+    <pre><code>./defender scan ai-scan submit &lt;TARGET_SOURCE&gt;
+# 출력: Job submitted: &lt;JOB_ID&gt;</code></pre>
 
     <h3>스캔 프로파일 (Preview)</h3>
     <p><strong>스캔 프로파일</strong>은 어떤 AI 모델로 스캔할지 선택합니다.</p>
@@ -63,36 +66,45 @@ xattr -d com.apple.quarantine Defender 2>/dev/null || true</code></pre>
       <tr><td><code>mai-augmented-profile</code> <span class="pill">Preview</span></td><td>위 3종 + MAI-Cyber-1-Flash</td><td>기본 모델을 사이버 특화 MAI-Cyber-1-Flash로 보강하고 싶을 때.</td></tr>
     </table>
     <pre><code># 사용 가능한 프로파일·기본값 확인
-defender scan profile model list
-defender scan profile model show-default
+./defender scan profile model list
+./defender scan profile model show-default
 
 # 특정 프로파일로 이번 스캔만 실행 (기본값 override)
-defender scan ai-scan submit . --model-profile gpt-general-profile
-defender scan ai-scan submit . --model-profile mai-augmented-profile</code></pre>
+./defender scan ai-scan submit . --model-profile gpt-general-profile
+./defender scan ai-scan submit . --model-profile mai-augmented-profile</code></pre>
 
-    <h3>비동기 워크플로 (장시간 스캔)</h3>
+    <h3>단계별 비동기 워크플로</h3>
     <pre><code># 1) 제출 후 Job ID 받기
-defender.exe scan ai-scan submit .
+./defender scan ai-scan submit .
 # 출력: Job submitted: &lt;JOB_ID&gt;
 
 # 2) Job 상태 확인
-defender.exe status &lt;JOB_ID&gt;
+./defender status &lt;JOB_ID&gt;
 
 # 3) (선택) 완료 대기 후 결과 다운로드
-defender.exe status wait &lt;JOB_ID&gt; -o results.sarif</code></pre>
+./defender status wait &lt;JOB_ID&gt; -o results.sarif</code></pre>
 
     <h3>심각도 필터 / Job 관리</h3>
-    <pre><code>defender.exe scan ai-scan submit . --severity high   # High·Critical만
+    <p><code>--severity</code> 플래그로 반환 결과의 임계값을 지정합니다. 허용 값: <code>low</code>(기본값), <code>medium</code>, <code>high</code>, <code>critical</code>. 임계값 이상 심각도만 반환됩니다.</p>
+    <pre><code>./defender scan ai-scan submit . --severity high   # High·Critical만
 
-defender.exe status                    # 추적 중인 모든 Job
-defender.exe status result &lt;JOB_ID&gt;    # 완료된 리포트 다운로드
-defender.exe status log &lt;JOB_ID&gt;       # 자동 저장된 디버그 로그 경로 출력
-defender.exe status cancel &lt;JOB_ID&gt;    # 실행 중 Job 취소</code></pre>
+./defender status                    # 추적 중인 모든 Job
+./defender status result &lt;JOB_ID&gt;    # 완료된 리포트 재다운로드
+./defender status log &lt;JOB_ID&gt;       # 자동 저장된 디버그 로그 경로 출력
+./defender status cancel &lt;JOB_ID&gt;    # 실행 중 Job 취소</code></pre>
+    <p><code>status result</code>는 로컬 SARIF 파일을 지웠거나, <code>wait</code> 명령이 완료 전 중단됐거나, 다른 머신에서 제출한 작업의 결과를 가져올 때 특히 유용합니다.</p>
     <div class="warn"><strong>취소 시 토큰 환불 없음</strong> 스캔 중 MDASH는 실시간 LLM 호출로 토큰을 소비합니다. 실행 중인 스캔을 취소하면 새 작업 스케줄링은 멈추지만, <strong>취소 이전에 소비된 토큰은 청구</strong>됩니다. 취소는 향후 작업의 추가 소비를 막을 뿐, 이미 사용된 토큰을 환불하지 않습니다.</div>
+
+    <h2>문제 해결</h2>
+    <p>특정 실행의 자동 저장 로그 경로를 확인하려면 스캔을 실행한 동일 머신에서 <code>./defender status log &lt;JOB_ID&gt;</code>를 사용합니다. CLI가 예기치 않게 동작하면 <code>--log-level debug</code>로 다시 실행해 상세 진단 출력을 얻을 수 있습니다. <code>--log-level</code> 허용 값: <code>trace</code>, <code>debug</code>, <code>info</code>(기본값), <code>warn</code>, <code>error</code>. <code>--log-file</code>을 지정하면 콘솔 대신 파일로 출력합니다.</p>
+    <pre><code>./defender &lt;실패한-명령&gt; --log-level debug --log-file ./defender-debug.log
+
+# 예: 스캔 실패 시
+./defender scan ai-scan submit &lt;TARGET_SOURCE&gt; --log-level debug</code></pre>
 
     <div class="pagenav">
       <a href="admin-consent.html"><span class="lbl">← 이전</span><br><strong>관리자 동의 스크립트</strong></a>
-      <a class="nxt" href="review-terminal.html"><span class="lbl">다음 →</span><br><strong>터미널 결과 검토</strong></a>
+      <a class="nxt" href="cicd.html"><span class="lbl">다음 →</span><br><strong>CI/CD 예제 (GitHub Actions)</strong></a>
     </div>
     <div class="footer">출처: <a href="https://learn.microsoft.com/en-us/security-exposure-management/defender-cli" target="_blank" rel="noopener">Microsoft Learn — Install and run Defender CLI</a>. 비공식 한글 요약본.</div>
   </div>

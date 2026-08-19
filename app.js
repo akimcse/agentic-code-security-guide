@@ -20,20 +20,22 @@
       ["foundry.html", "Foundry 설정"],
       ["onboarding-complete.html", "온보딩 완료 (엔드포인트·저장)"]
     ]},
-    { group: "원격 스캔 (GitHub 경로)", items: [
+    { group: "원격 스캔 (커넥터 경로)", items: [
       ["github-connector.html", "GitHub 커넥터 생성"],
+      ["ado-connector.html", "Azure DevOps 커넥터 생성"],
+      ["ado-provisioning-script.html", "ADO 프로비저닝 스크립트", true],
       ["trigger-scan.html", "On-demand 스캔 트리거"]
     ]},
     { group: "로컬 스캔 (CLI 경로)", items: [
       ["cli-setup.html", "Defender CLI 설정"],
       ["admin-consent.html", "관리자 동의 스크립트", true],
       ["install-run.html", "설치 및 실행"],
-      ["review-terminal.html", "터미널 결과 검토"],
       ["cicd.html", "CI/CD 예제 (GitHub Actions)"]
     ]},
     { group: "결과 검토 (공통)", items: [
-      ["auto-fix.html", "취약점 자동 수정 (GitHub Copilot CLI)"],
+      ["review-terminal.html", "터미널 결과 검토"],
       ["review-portal.html", "Defender 포털 결과 검토"],
+      ["auto-fix.html", "취약점 자동 수정 (GitHub Copilot CLI)"],
       ["audit-log.html", "감사 로그 이벤트"]
     ]},
     { group: "참조", items: [

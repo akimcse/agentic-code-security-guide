@@ -28,7 +28,7 @@
 
 # Grant-DefenderAdminConsent.ps1 저장 후 실행
 ./Grant-DefenderAdminConsent.ps1 -TenantId &lt;tenant-id&gt;</code></pre>
-    <p>Azure 로그인 완료 후, Entra ID &gt; Overview에서 <strong>Microsoft Defender Code</strong>를 검색해 <strong>Enterprise applications</strong>에 나타나는지 확인합니다. (스크립트 전문은 <a href="admin-consent.html">관리자 동의 스크립트</a> 참고.)</p>
+    <p>Azure 로그인 흐름을 완료합니다. Azure CLI에 표시된 코드를 복사한 다음, 리디렉션된 URL에서 해당 코드로 로그인합니다. 로그인 후 Entra ID &gt; Overview에서 <strong>Microsoft Defender Code</strong>를 검색해 <strong>Enterprise applications</strong>에 나타나는지 확인합니다. (스크립트 전문은 <a href="admin-consent.html">관리자 동의 스크립트</a> 참고.)</p>
 
     <h2>앱 기반 인증</h2>
     <ol class="steps">
@@ -45,6 +45,7 @@
 DEFENDER_ASPM_CLIENT_ID
 DEFENDER_ASPM_CLIENT_SECRET</code></pre>
     <div class="warn"><strong>주의</strong> 이 시크릿을 소스 제어에 커밋하거나 워크플로 로그에 포함하지 마세요. 정기적으로 교체하고 만료 전에 교체해 파이프라인 실패를 방지하세요.</div>
+    <p><code>DEFENDER_ASPM_TENANT_ID</code>와 <code>DEFENDER_ASPM_CLIENT_ID</code>는 Microsoft Entra ID의 앱 등록 <strong>개요(Overview)</strong> 페이지에서 <strong>디렉터리(테넌트) ID</strong>와 <strong>애플리케이션(클라이언트) ID</strong> 값을 각각 복사합니다. <code>DEFENDER_ASPM_CLIENT_SECRET</code>은 동일한 앱 등록에서 새 클라이언트 암호를 만든 직후 값을 복사하여 파이프라인 시크릿 스토어에 안전하게 저장합니다.</p>
 
     <h2>대화형 인증</h2>
     <p>셸에 테넌트 환경 변수를 설정한 뒤 device code 로그인 흐름으로 로그인합니다.</p>
@@ -55,7 +56,7 @@ az login \
   --scope c2fd607e-fe6e-41bd-ae58-08e2f24014aa/Defender.InteractiveLogin \
   --allow-no-subscriptions \
   --use-device-code</code></pre>
-    <p>콘솔의 device code를 복사해 브라우저 로그인 페이지에서 해당 테넌트 접근 권한이 있는 계정으로 로그인하고, 코드를 붙여넣어 인증을 완료합니다.</p>
+    <p>콘솔의 device code를 복사해 브라우저 로그인 페이지에서 해당 테넌트 접근 권한이 있는 계정으로 로그인하고, 코드를 붙여넣어 인증을 완료합니다. 그런 다음 <strong>콘솔로 돌아와 Azure CLI 세션이 완료될 때까지 기다립니다.</strong></p>
     <div class="note"><strong>참고</strong> scope의 <code>c2fd607e-fe6e-41bd-ae58-08e2f24014aa</code>는 Microsoft Defender Code 1st-party 앱 ID입니다.</div>
 
     <div class="pagenav">

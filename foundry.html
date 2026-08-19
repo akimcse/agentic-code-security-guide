@@ -15,30 +15,41 @@
     <h1 class="page-title">Foundry 설정</h1>
     <p class="page-lead">Agentic 코드 보안 설정의 일부로 사용할 MDASH 전용 Microsoft Foundry 리소스를 생성하고, 필수 모델 배포·TPM·콘텐츠 필터·네트워크 접근을 구성합니다.</p>
 
+    <h2>사전 요구사항</h2>
+    <ul>
+      <li>활성 구독이 있는 Azure 계정.</li>
+      <li>Foundry 리소스를 생성할 수 있는 역할 — 구독 또는 리소스 그룹의 <strong>Owner</strong> 등.</li>
+    </ul>
+
     <h2>1. Foundry 리소스 생성</h2>
     <ol class="steps">
-      <li><a href="https://portal.azure.com" target="_blank" rel="noopener">Azure 포털</a>에서 <strong>Microsoft Foundry</strong> 검색 → <strong>Use with Foundry</strong> 아래 <strong>Foundry</strong> 선택.</li>
-      <li><strong>Create</strong> → 구독·리소스 그룹 선택, 리소스 이름·리전·기본 프로젝트 이름 입력.</li>
-      <li><strong>Review + create</strong> → <strong>Create</strong> → 완료 후 <strong>Go to resource</strong>.</li>
+      <li><a href="https://ai.azure.com" target="_blank" rel="noopener">Microsoft Foundry</a>에 로그인합니다.</li>
+      <li>탐색 바에서 <strong>New Foundry</strong> 토글이 켜져 있는지 확인합니다.</li>
+      <li>드롭다운에서 <strong>Create a new project</strong>를 선택합니다.</li>
+      <li><strong>Project name</strong>을 입력합니다 (예: <code>my-foundry-project</code>).</li>
+      <li><strong>Advanced options</strong>에서 리소스 그룹과 위치(region)를 구성합니다.</li>
+      <li><strong>Create project</strong>를 선택합니다. 프로젝트 개요 페이지가 나타나면 준비 완료입니다.</li>
     </ol>
-    <p>프로젝트를 열고(<strong>New Foundry</strong> 토글 활성화 확인, Legacy면 <strong>Start Building →</strong>) 모델을 배포합니다.</p>
 
-    <h2>2. 필수 모델 배포 — 2개 프로파일</h2>
-    <p><strong>Build &gt; Deployments &gt; Deploy a base model</strong>에서 다음을 배포합니다. 각 모델은 한 번씩만 배포합니다.</p>
+    <h2>2. 필수 값 복사</h2>
+    <p>Foundry 프로젝트 <strong>홈(home)</strong> 페이지에서 서비스 연결에 필요한 값을 복사합니다. 이 두 값은 나중에 <a href="onboarding-complete.html">Defender 포털 온보딩</a>(엔드포인트 입력 단계)에서 사용합니다.</p>
+    <ol class="steps">
+      <li><strong>Project Endpoint</strong>를 찾아 복사합니다.</li>
+      <li><strong>API Key</strong>를 찾아 복사합니다.</li>
+    </ol>
+
+    <h2>3. 필수 모델 배포 — 2개 프로파일</h2>
+    <p><strong>Build &gt; Models(또는 Deployments) &gt; Deployments 탭 &gt; Deploy a base model</strong>에서 다음을 배포합니다. 각 모델은 한 번씩만 배포합니다.</p>
     <table>
       <tr><th>프로파일</th><th>모델</th><th>비고</th></tr>
       <tr><td><strong>GPT-General</strong></td><td><code>gpt-5.4</code> · <code>gpt-5.3-codex</code> · <code>gpt-5.4-mini</code></td><td>기본 필수 3종</td></tr>
-      <tr><td><strong>MAI-Augmented</strong> <span class="pill">Preview</span></td><td>위 3종 + <code>MAI-Cyber-1-Flash</code></td><td><strong>Defender CLI 스캔에서만</strong> 사용 가능. 사이버 특화 모델로 기본 모델을 보강.</td></tr>
+      <tr><td><strong>MAI-Augmented</strong> <span class="pill">Preview</span></td><td>위 3종 + <code>MAI-Cyber-1-Flash</code></td><td>사이버 특화 모델(<code>MAI-Cyber-1-Flash</code>)로 기본 3종을 보강하는 프로파일.</td></tr>
     </table>
-    <div class="note"><strong>참고</strong> 통합이 동작하려면 <code>gpt-5.4</code>, <code>gpt-5.3-codex</code>, <code>gpt-5.4-mini</code> 3종을 반드시 모두 배포해야 합니다. 커스텀 설정을 쓸 경우에도 요건을 충족해야 합니다.</div>
+    <div class="note"><strong>참고</strong> 통합이 동작하려면 <code>gpt-5.4</code>, <code>gpt-5.3-codex</code>, <code>gpt-5.4-mini</code> 3종을 반드시 모두 배포해야 합니다. 커스텀 설정으로 배포하는 경우 <strong>DataZoneBatch</strong>, <strong>GlobalBatch</strong>, <strong>DeveloperTier</strong>는 선택하지 마십시오.</div>
 
-    <h2>3. TPM 속도 제한 구성</h2>
+    <h2>4. TPM 속도 제한 구성</h2>
     <p><strong>Models &gt; Deployment</strong>에서 각 모델 선택 → <strong>Edit</strong> → <strong>Tokens per Minute Rate Limit</strong>을 <code>1,000,000</code> 이상으로 → <strong>Save</strong>. 3개 모델 모두 반복.</p>
     <div class="note"><strong>참고</strong> MDASH 스캔 처리량을 지원하려면 배포당 최소 <strong>1,000,000 TPM</strong>이 필요합니다.</div>
-
-    <h2>4. 필수 값 복사</h2>
-    <p>서비스 연결에 필요한 <strong>Project Endpoint</strong>와 <strong>API Key</strong>를 복사해 둡니다.</p>
-
     <h2>5. 콘텐츠 필터링 구성</h2>
     <p>MDASH는 기본 필터가 유해하다고 오분류해 차단할 수 있는 보안 콘텐츠를 전송하므로, 배포 모델이 제한 없이 동작하도록 콘텐츠 필터를 관대하게 구성해야 합니다. (사전 요건: Foundry 리소스 생성 + 3개 모델 배포 완료. 프리뷰의 <code>MAI-Cyber-1-Flash</code>에도 동일 설정 적용.)</p>
     <ol class="steps">
@@ -59,7 +70,7 @@
     </table>
     <ul>
       <li><strong>옵션 1 (권장)</strong> — 제공된 <code>foundry-ip-rules.sh</code> 스크립트로 필요한 IP(ASPM Web API + ScannerService 대역)를 한 번에 추가. Azure CLI·<code>jq</code> 설치, Azure 로그인, 올바른 구독 선택, Foundry 리소스에 대한 <strong>Contributor/Owner</strong> 권한 필요.</li>
-      <li><strong>옵션 2</strong> — Azure 포털 Foundry 리소스 → <strong>Resource Management &gt; Networking &gt; Firewall</strong>의 <strong>Address range</strong>에 IP 수동 추가 후 <strong>Save</strong>.</li>
+      <li><strong>옵션 2</strong> — Azure 포털 Foundry 리소스 → <strong>Resource Management &gt; Networking &gt; Firewall</strong>의 <strong>Address range</strong>에 IP 수동 추가 후 <strong>Save</strong>. (공식 문서에는 옵션 1의 스크립트 방식만 안내되어 있으며, 옵션 2는 동등한 포털 대안입니다.)</li>
     </ul>
     <div class="tip"><strong>중요</strong> 이 IP 허용은 <strong>Azure의 Foundry 리소스 방화벽</strong> 설정이며, 고객 사내망(업무망 등) 방화벽과는 무관합니다. MDASH ↔ Foundry는 클라우드 내부 경로입니다.</div>
 

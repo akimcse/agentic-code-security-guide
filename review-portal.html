@@ -60,7 +60,19 @@
     <h2>Scans 탭</h2>
     <p>최근 90일 내 성공한 모든 스캔. 상단 KPI: 스캔 수 · 스캔된 저장소 수 · Succeeded · Running · Failed.</p>
     <p><strong>컬럼:</strong> Status · Repository · Branch · Trigger · Tokens · Started · Duration · Severity(스택 막대) · Triage(스택 막대) · Run ID(예: run_d73220eb). 행 선택 시 상세 드로어(Overview·Recommendations 서브탭)가 열립니다.</p>
+    <p>드로어 <strong>Overview</strong> 서브탭에서 확인할 수 있는 정보:</p>
+    <table>
+      <tr><th>섹션</th><th>내용</th></tr>
+      <tr><td>Summary</td><td>Started · Finished · Duration · Run ID · SCM 도구 이름</td></tr>
+      <tr><td>Scan identity</td><td>Trigger · 소비된 토큰 · <strong>커밋 해시(Commit hash)</strong> · Repository · Branch · 사용 도구</td></tr>
+      <tr><td>High-volume recommendations</td><td><strong>Most exposed file</strong>(발견이 가장 많은 파일) · <strong>Most common CWE</strong></td></tr>
+      <tr><td>Scan artifacts</td><td>스캐너가 생성한 <strong>Scan Report</strong> 및 <strong>SARIF</strong> 파일 다운로드</td></tr>
+    </table>
     <div class="note"><strong>참고</strong> 메인 Recommendations 탭은 항상 브랜치별 최신 스캔을 보여줍니다. 드로어는 특정 과거 스캔이 <strong>실행 시점에</strong> 발견한 내용을 보는 유일한 곳으로, 감사·사고 검토·연속 실행 비교에 유용합니다.</div>
+
+    <h3>스캔 취소</h3>
+    <p><strong>Scans</strong> 탭에서 취소할 대기 중 또는 실행 중인 스캔을 선택하고, 스캔 상세 페이지에서 <strong>Cancel scan</strong>을 선택합니다. 확인 대화상자에는 스캔 시작 시간·트리거한 사용자·이미 소비된 토큰 수·스캔 소요 시간이 표시됩니다. 취소 사유를 선택하고 선택적으로 세부 내용을 입력한 뒤 <strong>Confirm</strong>을 선택합니다.</p>
+    <div class="warn"><strong>중요 — 취소해도 토큰은 환불되지 않습니다</strong> 스캔 중 MDASH는 작업을 처리하며 실시간 LLM 호출로 토큰을 소비합니다. 실행 중인 스캔을 취소하면 새 작업 예약은 중단되지만, 취소가 적용되기 전에 소비된 토큰은 계속 청구됩니다.</div>
 
     <h2>데이터 범위 및 신선도</h2>
     <ul>
@@ -69,9 +81,24 @@
       <li><strong>만료 링크</strong> — 90일 초과 스캔 직접 링크는 "Scan not found" 반환.</li>
     </ul>
 
+    <h2>빠른 참조 — 언제 어떤 뷰를 사용할까</h2>
+    <table>
+      <tr><th>목적</th><th>이동 위치</th></tr>
+      <tr><td>에이전트 코드 보안 현황 한눈에 파악</td><td>Overview → Score + 14일 추세</td></tr>
+      <tr><td>AI가 발견을 분류한 방식 이해</td><td>Overview → Recommendation triage funnel</td></tr>
+      <tr><td>최신 스캔 활동 확인</td><td>Overview → Latest AI code scans</td></tr>
+      <tr><td>개별 발견 검토·조치</td><td>Security recommendations 탭</td></tr>
+      <tr><td>특정 브랜치·저장소·파일·CWE 필터링</td><td>Security recommendations → 필터</td></tr>
+      <tr><td>실행된 모든 스캔 확인</td><td>Scans 탭</td></tr>
+      <tr><td>특정 과거 스캔의 시점별 발견 확인</td><td>Scans 탭 → 행 선택해 드로어 열기</td></tr>
+      <tr><td>실행 비용(토큰)·출처 확인</td><td>Scans 탭 → 실행 열기 → Summary</td></tr>
+      <tr><td>스캔 리포트·SARIF 다운로드</td><td>Scans 탭 → 드로어 Overview → Scan artifacts</td></tr>
+      <tr><td>대기 중 또는 실행 중인 스캔 취소</td><td>Scans 탭 → 행 선택 → Cancel scan</td></tr>
+    </table>
+
     <div class="pagenav">
-      <a href="auto-fix.html"><span class="lbl">← 이전</span><br><strong>취약점 자동 수정</strong></a>
-      <a class="nxt" href="audit-log.html"><span class="lbl">다음 →</span><br><strong>감사 로그 이벤트</strong></a>
+      <a href="review-terminal.html"><span class="lbl">← 이전</span><br><strong>터미널 결과 검토</strong></a>
+      <a class="nxt" href="auto-fix.html"><span class="lbl">다음 →</span><br><strong>취약점 자동 수정</strong></a>
     </div>
     <div class="footer">출처: <a href="https://learn.microsoft.com/en-us/security-exposure-management/review-portal-results" target="_blank" rel="noopener">Review Exposure Management in Defender portal</a> · <a href="https://learn.microsoft.com/en-us/security-exposure-management/mdash-initiative" target="_blank" rel="noopener">Codename MDASH initiative</a>. 비공식 한글 요약본.</div>
   </div>
