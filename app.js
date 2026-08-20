@@ -54,6 +54,36 @@
     return p || "index.html";
   }
 
+  // Pages hidden on the deployed site but visible when previewing locally.
+  var LOCAL_ONLY = ["architecture.html"];
+  function isLocal() {
+    var h = location.hostname;
+    return h === "localhost" || h === "127.0.0.1" || h === "" || h === "[::1]";
+  }
+  function isHidden(href) {
+    return !isLocal() && LOCAL_ONLY.indexOf(href) !== -1;
+  }
+
+  // On the deployed site, rewire prev/next links that point to a hidden page.
+  var PAGENAV_REMAP = {
+    "architecture.html": { nxt: ["defender-setup.html", "권한 설정 (RBAC)"], prev: ["index.html", "개요 (Overview)"] }
+  };
+  function fixPagenav() {
+    if (isLocal()) return;
+    var anchors = document.querySelectorAll(".pagenav a");
+    Array.prototype.forEach.call(anchors, function (a) {
+      var href = (a.getAttribute("href") || "").split("/").pop();
+      var map = PAGENAV_REMAP[href];
+      if (!map) return;
+      var dir = a.classList.contains("nxt") ? "nxt" : "prev";
+      var target = map[dir];
+      if (!target) return;
+      a.setAttribute("href", target[0]);
+      var strong = a.querySelector("strong");
+      if (strong) strong.textContent = target[1];
+    });
+  }
+
   function label(theme) {
     return theme === "dark" ? "☀️ 라이트모드" : "🌙 다크모드";
   }
@@ -70,6 +100,7 @@
       html += '<div class="nav-group' + (g.ext ? " nav-ext" : "") + '"><h4>' + g.group + "</h4>";
       g.items.forEach(function (it) {
         var href = it[0], text = it[1], sub = it[2];
+        if (!g.ext && isHidden(href)) return;
         if (g.ext) {
           html += '<a href="' + href + '" target="_blank" rel="noopener">' + text + "</a>";
         } else {
@@ -98,6 +129,8 @@
     });
   }
 
-  if (document.readyState !== "loading") build();
-  else document.addEventListener("DOMContentLoaded", build);
+  function boot() { build(); fixPagenav(); }
+
+  if (document.readyState !== "loading") boot();
+  else document.addEventListener("DOMContentLoaded", boot);
 })();
