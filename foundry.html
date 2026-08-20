@@ -72,7 +72,7 @@
       <li><strong>옵션 1 (권장)</strong> — 제공된 <code>foundry-ip-rules.sh</code> 스크립트로 필요한 IP(ASPM Web API + ScannerService 대역)를 한 번에 추가. Azure CLI·<code>jq</code> 설치, Azure 로그인, 올바른 구독 선택, Foundry 리소스에 대한 <strong>Contributor/Owner</strong> 권한 필요.</li>
       <li><strong>옵션 2</strong> — Azure 포털 Foundry 리소스 → <strong>Resource Management &gt; Networking &gt; Firewall</strong>의 <strong>Address range</strong>에 IP 수동 추가 후 <strong>Save</strong>. (공식 문서에는 옵션 1의 스크립트 방식만 안내되어 있으며, 옵션 2는 동등한 포털 대안입니다.)</li>
     </ul>
-    <div class="tip"><strong>중요</strong> 이 IP 허용은 <strong>Azure의 Foundry 리소스 방화벽</strong> 설정이며, 고객 사내망(업무망 등) 방화벽과는 무관합니다. MDASH ↔ Foundry는 클라우드 내부 경로입니다.</div>
+    <div class="tip"><strong>중요</strong> 이 IP 허용은 <strong>Azure의 Foundry 리소스 방화벽</strong> 설정이며, 고객 사내망(업무망 등) 방화벽과는 무관합니다. MDASH는 Foundry <strong>엔드포인트에 공인 IP로 접근</strong>하므로(퍼블릭 경로), Foundry 네트워킹이 <strong>Selected networks and private endpoints</strong>인 경우 위 MDASH 공인 IP 대역을 반드시 허용해야 검증·스캔이 동작합니다.</div>
 
     <h2>Foundry 연결 해제</h2>
     <p>다른 Foundry로 교체·제거하려면 <strong>Initiative &gt; Settings</strong>에서 <strong>Disconnect</strong>. 연결만 제거될 뿐 Foundry 리소스 자체는 삭제되지 않으며, 대안 없이 해제하면 에이전트 코드 스캐닝이 비활성화됩니다.</p>
