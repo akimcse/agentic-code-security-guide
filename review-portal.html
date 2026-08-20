@@ -37,6 +37,10 @@
     </table>
 
     <h2>Overview 탭 — 6개 패널</h2>
+    <figure class="fig">
+      <img src="images/portal-overview.png" alt="Defender 포털 Initiatives > AI code security Overview 화면 — Current secure score 도넛(53%), Secure score trend 선형 차트, Repositories with the most recommendations, Recommendations by risk, Weaknesses with the most recommendations 표">
+      <figcaption><strong>AI code security</strong> 이니셔티브 <strong>Overview</strong> — 점수 도넛·14일 추세·저장소별/CWE별 권장 항목·위험별 분포를 한 화면에서 확인합니다.</figcaption>
+    </figure>
     <ul>
       <li><strong>Score</strong> — 0~100% 도넛 차트(높을수록 좋음). 심각도 가중 코드 건강도. 기본 브랜치만.</li>
       <li><strong>14-day score trend</strong> — 점수 변화 14일 선형 차트로 수정 효과 확인. 기본 브랜치만.</li>
@@ -49,6 +53,10 @@
 
     <h2>Security recommendations 탭</h2>
     <p>(저장소, 브랜치)별 최신 스캔에서 도출된 개별 권장 항목을 검토·조치하는 주요 작업 공간. 기본은 기본 브랜치 범위이며 전체 브랜치로 전환 가능. 상단 4개 KPI(Total · Validated · Flagged · Low priority).</p>
+    <figure class="fig">
+      <img src="images/portal-recommendations.png" alt="Security recommendations 탭 목록과 우측 Remediation 드로어 — 특정 발견(Improper Output Neutralization for Logs)의 Change 설명, Suggested code, Why this fix, Verification 섹션">
+      <figcaption><strong>Security recommendations</strong> 목록에서 발견을 선택하면 우측 드로어의 <strong>Remediation</strong> 탭에서 변경 설명·제안 코드·수정 이유·검증 방법을 확인할 수 있습니다.</figcaption>
+    </figure>
     <p><strong>컬럼:</strong> Severity · Confidence(Likely·Suspect·Unlikely) · Recommendation · Weakness ID(CWE) · Repository · Branch · Trigger(Source+Run type) · File · Scan start time.</p>
     <p><strong>기본 정렬:</strong> 버킷(Validated → Flagged → Low) → 심각도(Critical → High → Medium → Low) → 신뢰도(Likely → Suspect → Unlikely).</p>
     <ul>
@@ -59,6 +67,10 @@
 
     <h2>Scans 탭</h2>
     <p>최근 90일 내 성공한 모든 스캔. 상단 KPI: 스캔 수 · 스캔된 저장소 수 · Succeeded · Running · Failed.</p>
+    <figure class="fig">
+      <img src="images/portal-scans-tab.png" alt="AI code security 이니셔티브 Scans 탭 — Repository·Branch·Scan time·Duration·Severity(스택 막대)·Triage(스택 막대)·Scan ID 컬럼의 스캔 목록">
+      <figcaption>이니셔티브 <strong>Scans</strong> 탭 — 저장소·브랜치·소요 시간과 함께 <strong>Severity</strong>·<strong>Triage</strong> 스택 막대, <strong>Scan ID</strong>로 모든 스캔을 추적합니다.</figcaption>
+    </figure>
     <p><strong>컬럼:</strong> Status · Repository · Branch · Trigger · Tokens · Started · Duration · Severity(스택 막대) · Triage(스택 막대) · Run ID(예: run_d73220eb). 행 선택 시 상세 드로어(Overview·Recommendations 서브탭)가 열립니다.</p>
     <p>드로어 <strong>Overview</strong> 서브탭에서 확인할 수 있는 정보:</p>
     <table>

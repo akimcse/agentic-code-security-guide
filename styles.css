@@ -274,7 +274,7 @@ figure.fig img {
   border-radius: 10px; box-shadow: var(--shadow); background: var(--surface);
 }
 figure.fig figcaption {
-  margin-top: 8px; font-size: 13px; color: var(--text-soft); text-align: center;
+  margin-top: 8px; font-size: 13px; color: var(--text-soft); text-align: left;
 }
 
 /* FAQ accordion */

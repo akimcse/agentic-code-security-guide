@@ -30,6 +30,10 @@
     </table>
 
     <h2>HTML 리포트</h2>
+    <figure class="fig">
+      <img src="images/cli-html-report.png" alt="AI Scan Results HTML 리포트 — 상단 메타데이터(날짜·경로·소요 시간·브랜치·발견 수), Executive Summary의 Critical/High/Medium/Low 카운트 카드, Scan Context 섹션">
+      <figcaption>CLI가 생성한 <strong>AI Scan Results</strong> HTML 리포트 — <strong>Executive Summary</strong>(심각도별 카운트)와 <strong>Scan Context</strong>(저장소·브랜치·소요 시간)를 한눈에 확인합니다.</figcaption>
+    </figure>
     <p>스캔 디렉터리로 이동해 생성된 <code>.html</code>을 브라우저에서 엽니다. 포함 내용:</p>
     <ul>
       <li><strong>발견 요약</strong> — 심각도별(Critical·Important·Moderate·Low) 총계.</li>
@@ -39,6 +43,10 @@
     </ul>
 
     <h2>SARIF 파일 (v2.1.0)</h2>
+    <figure class="fig">
+      <img src="images/cli-sarif-json.png" alt="Defender CLI가 생성한 SARIF v2.1.0 JSON 파일 — version, $schema, runs[].tool.driver(name: defender-aiscan)와 rules 배열(CWE-789, CWE-190 등)이 보이는 코드 뷰">
+      <figcaption>생성된 <strong>SARIF v2.1.0</strong> 결과 파일 — <code>defender-aiscan</code> 도구 메타데이터와 CWE 규칙·발견 항목이 기계 판독 형식으로 담깁니다.</figcaption>
+    </figure>
     <p>OASIS SARIF v2.1.0 사양을 따르는 기계 판독 결과로 업계 표준 도구와 호환됩니다. 용도: CI/CD 임포트(GitHub Advanced Security·Azure DevOps PR 주석), SIEM·보안 자세 도구 공급, 커스텀 리포트, 스캔 간 비교로 수정 속도 추적.</p>
     <table>
       <tr><th>섹션</th><th>설명</th></tr>

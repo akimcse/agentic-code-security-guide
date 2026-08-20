@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>On-demand 스캔 트리거 · MDASH Private Preview 가이드</title>
+<title>Defender Portal에서 스캔 실행 · MDASH Private Preview 가이드</title>
 <link rel="stylesheet" href="styles.css">
 <script src="app.js"></script>
 </head>
@@ -12,7 +12,7 @@
   <aside class="sidebar" id="sidebar"></aside>
   <main class="main">
   <div class="content">
-    <h1 class="page-title">On-demand 에이전트 스캔 트리거 (포털)</h1>
+    <h1 class="page-title">Defender Portal에서 스캔 실행 (On-demand)</h1>
     <p class="page-lead">SCM 커넥터(<a href="github-connector.html">GitHub</a> 또는 <a href="ado-connector.html">Azure DevOps</a>)가 활성화되면 온보딩된 저장소에 대해 원격 On-demand 스캔을 실행할 수 있습니다. (활성화 후 최대 1시간 후 사용 가능)</p>
 
     <h2>사전 요구사항</h2>
@@ -26,6 +26,10 @@
     </ol>
 
     <h2>2단계: 저장소 목록 확인</h2>
+    <figure class="fig">
+      <img src="images/portal-select-repo.png" alt="Codename MDASH 이니셔티브의 Manage scans 측면 패널 — Repository·Organization·SCM tool·Status·Tokens 컬럼의 저장소 목록(mdash-corp·NodeGoat·curl)이 표시되고 아직 아무 저장소도 선택되지 않아 Start scan 버튼이 비활성인 화면">
+      <figcaption><strong>Manage scans</strong> 패널 — 활성 SCM 커넥터로 발견된 저장소 목록이 표시됩니다. (SCM tool·마지막 스캔 상태·소비 토큰 확인 가능)</figcaption>
+    </figure>
     <p>측면 패널에 활성화된 SCM 커넥터로 발견된 모든 저장소가 표시됩니다. 각 저장소별로:</p>
     <ul>
       <li>저장소 이름 · 저장소 크기 · 조직명</li>
@@ -35,6 +39,10 @@
     <p>저장소 크기와 소비 토큰 신호는 스캔 전에 영향도를 예측하는 데 도움이 됩니다.</p>
 
     <h2>3단계: 저장소 선택 후 스캔 실행</h2>
+    <figure class="fig">
+      <img src="images/portal-manage-scans.png" alt="Manage scans 패널에서 저장소(mdash-corp)가 체크박스로 선택되어 하단의 Start scan 버튼이 활성화된 화면">
+      <figcaption>스캔할 저장소를 선택하면 하단의 <strong>Start scan</strong>이 활성화됩니다. 이어지는 확인 대화 상자에서 스캔 프로필을 고른 뒤 <strong>Scan repo</strong>로 실행합니다.</figcaption>
+    </figure>
     <ol class="steps">
       <li>스캔할 저장소 선택.</li>
       <li><strong>Start scan</strong> 선택.</li>

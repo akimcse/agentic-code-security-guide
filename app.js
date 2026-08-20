@@ -24,13 +24,13 @@
       ["github-connector.html", "GitHub 커넥터 생성"],
       ["ado-connector.html", "Azure DevOps 커넥터 생성"],
       ["ado-provisioning-script.html", "ADO 프로비저닝 스크립트", true],
-      ["trigger-scan.html", "On-demand 스캔 트리거"]
+      ["trigger-scan.html", "Defender Portal에서 스캔 실행"]
     ]},
     { group: "로컬 스캔 (CLI 경로)", items: [
       ["cli-setup.html", "Defender CLI 설정"],
       ["admin-consent.html", "관리자 동의 스크립트", true],
-      ["install-run.html", "설치 및 실행"],
-      ["cicd.html", "CI/CD 예제 (GitHub Actions)"]
+      ["install-run.html", "Defender CLI에서 스캔 실행"],
+      ["cicd.html", "CI/CD 예제 (GitHub Actions)", true]
     ]},
     { group: "결과 검토 (공통)", items: [
       ["review-terminal.html", "터미널 결과 검토"],

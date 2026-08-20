@@ -19,7 +19,7 @@
 
     <h2>사전 요구사항</h2>
     <ul>
-      <li>Defender CLI 설치 (<a href="install-run.html">설치 및 실행</a>).</li>
+      <li>Defender CLI 설치 (<a href="install-run.html">Defender CLI에서 스캔 실행</a>).</li>
       <li><strong>GitHub Copilot CLI 설치·인증</strong> — <a href="https://docs.github.com/en/copilot/github-copilot-in-the-cli/installing-github-copilot-in-the-cli" target="_blank" rel="noopener">Installing GitHub Copilot in the CLI</a>. (자동 수정 엔진으로 필수)</li>
       <li>최소 1회 스캔으로 얻은 SARIF 결과 파일.</li>
     </ul>
@@ -31,6 +31,16 @@ defender fix ./defender-aiscan-&lt;JOB_ID&gt;.sarif
 # 심각도 임계값 지정 (임계값 이상 모두 포함)
 defender fix ./results.sarif --severity low</code></pre>
     <div class="note"><strong>참고</strong> autofix는 로컬 코드 변경에 GitHub Copilot을 사용합니다. MDASH는 수정을 자동 적용하지 않으며, 제안된 변경은 반드시 개발자가 검토·검증 후 병합해야 합니다.</div>
+    <figure class="fig">
+      <img src="images/autofix-terminal.png" alt="defender fix 명령의 터미널 출력 — 'Defender → Copilot autofix', Severity scope HIGH+CRITICAL, Findings 50 in scope, Source SARIF 파일명, .defender-fix-prompt.txt 읽기 진행 로그">
+      <figcaption><code>defender fix</code> 실행 — <strong>Defender → Copilot autofix</strong>가 SARIF 결과(심각도 범위 내 발견)를 읽어 수정본 생성을 시작합니다.</figcaption>
+    </figure>
+    <h2>개발자 네이티브 검토</h2>
+    <p>생성된 수정본은 GitHub에서 원래 발견 항목과 함께 검토·병합합니다. Copilot이 만든 PR에는 MDASH 발견(CWE·심각도·신뢰도·트리거 입력)과 제안 수정이 함께 담깁니다.</p>
+    <figure class="fig">
+      <img src="images/autofix-github-pr.png" alt="GitHub Pull Request 'MDASH found XPath Injection #2' — Microsoft Defender for Cloud AI Security Finding(CWE-643 XPath Injection, Severity Warning, Confidence Confirmed), Finding 설명, Copilot Suggested Fix 섹션">
+      <figcaption>GitHub PR — MDASH 발견(<strong>CWE-643 XPath Injection</strong>)과 <strong>Copilot Suggested Fix</strong>가 함께 표시되어, 개발자가 코드 옆에서 바로 검토·병합할 수 있습니다.</figcaption>
+    </figure>
 
     <div class="pagenav">
       <a href="review-portal.html"><span class="lbl">← 이전</span><br><strong>Defender 포털 결과 검토</strong></a>

@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>설치 및 실행 · MDASH Private Preview 가이드</title>
+<title>Defender CLI에서 스캔 실행 · MDASH Private Preview 가이드</title>
 <link rel="stylesheet" href="styles.css">
 <script src="app.js"></script>
 </head>
@@ -12,7 +12,7 @@
   <aside class="sidebar" id="sidebar"></aside>
   <main class="main">
   <div class="content">
-    <h1 class="page-title">Defender CLI 설치 및 실행</h1>
+    <h1 class="page-title">Defender CLI에서 스캔 실행</h1>
     <p class="page-lead">터미널에서 Defender CLI를 내려받아 에이전트 코드 스캔을 실행합니다. CLI는 저장소의 로컬 복사본을 스캔합니다.</p>
 
     <h2>사전 요구사항</h2>
@@ -57,6 +57,10 @@ xattr -d com.apple.quarantine Defender 2>/dev/null || true</code></pre>
     <p>아래 명령에서 <code>&lt;TARGET_SOURCE&gt;</code>를 소스 코드 디렉터리 경로(예: <code>my-code\project1</code>)로 바꿉니다. 코드 디렉터리 안에서 실행하는 경우 <code>.</code>을 사용합니다. (Windows는 <code>.\defender.exe</code>, macOS/Linux는 <code>./defender</code>로 실행합니다.)</p>
     <pre><code>./defender scan ai-scan submit &lt;TARGET_SOURCE&gt;
 # 출력: Job submitted: &lt;JOB_ID&gt;</code></pre>
+    <figure class="fig">
+      <img src="images/cli-scan-submitted.png" alt="Defender CLI 스캔 제출 터미널 출력 — resolving tenant/building archive/init/uploading archive/submit 단계 완료 후 'AI scan submitted'와 Job ID, 그리고 wait/status/result/cancel 다음 단계 안내">
+      <figcaption>스캔 제출 직후 터미널 출력 — <strong>Job ID</strong>가 반환되고, 스캔은 <strong>서버 측에서 비동기 실행</strong>됩니다. 이후 <code>wait</code>·<code>status</code>·<code>result</code>·<code>cancel</code>로 작업을 관리합니다.</figcaption>
+    </figure>
 
     <h3>스캔 프로파일 (Preview)</h3>
     <p><strong>스캔 프로파일</strong>은 어떤 AI 모델로 스캔할지 선택합니다.</p>
