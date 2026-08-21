@@ -62,12 +62,11 @@
     </ul>
 
     <h2>MDASH 프라이빗 프리뷰 전체 과정 (End-to-end)</h2>
-    <p>MDASH 프라이빗 프리뷰는 권한 부여부터 첫 스캔·결과 검토까지 다음 <strong>6단계(Step 0–5)</strong>로 진행됩니다. 각 단계의 스크린샷과 상세 절차는 연결된 세부 페이지를 참고하세요. (아래 원형 번호가 Step 0–5에 해당합니다.)</p>
+    <p>MDASH 프라이빗 프리뷰는 사전 준비부터 첫 스캔·결과 검토까지 다음 <strong>5단계(Step 0–4)</strong>로 진행됩니다. <strong>Step 0(Foundry 리소스 연결)와 Step 1(권한 부여)은 온보딩 전에만 마치면 되는 사전 준비로, 순서 상관없이(병렬로) 진행할 수 있습니다.</strong> 각 단계의 스크린샷과 상세 절차는 연결된 세부 페이지를 참고하세요. (아래 원형 번호가 Step 0–4에 해당합니다.)</p>
     <ol class="steps" style="counter-reset: s -1">
+      <li><strong>Microsoft Foundry 리소스 연결</strong> — 전용 Foundry 리소스를 만들고 필수 모델을 배포해 <strong>Project endpoint·API key</strong>를 확보합니다. → <a href="foundry.html">Foundry 설정</a></li>
       <li><strong>권한 부여 (Assign permissions)</strong> — Defender 통합 RBAC로 커스텀 역할을 만들고 <strong>Agentic Code Security</strong> 권한을 부여합니다. → <a href="defender-setup.html">권한 설정 (RBAC)</a></li>
-      <li><strong>약관 수락</strong> — 이니셔티브 <strong>진입점</strong>(Overview 또는 Initiatives)에서 온보딩 플로우를 시작하고 약관을 수락합니다(수락해야 Save 활성화). → <a href="onboarding-start.html">온보딩 시작 (진입점·약관)</a></li>
-      <li><strong>Microsoft Foundry 리소스 연결</strong> — 전용 Foundry 리소스를 만들고 필수 모델을 배포합니다. → <a href="foundry.html">Foundry 설정</a></li>
-      <li><strong>Defender 포털 온보딩</strong> — <strong>Project endpoint</strong>·<strong>API key</strong> 입력 → <strong>Validate</strong> → <strong>Save</strong>(검증 성공해야 저장 가능). → <a href="onboarding-complete.html">온보딩 완료 (엔드포인트·저장)</a></li>
+      <li><strong>온보딩</strong> — 이니셔티브 <strong>진입점</strong>에서 온보딩을 시작해 약관을 수락하고, <strong>Project endpoint·API key</strong> 입력 → <strong>Validate</strong> → <strong>Save</strong>로 완료합니다. → <a href="portal-onboarding.html">온보딩</a></li>
       <li><strong>AI 스캔 설정</strong> — <a href="github-connector.html">GitHub</a>/<a href="ado-connector.html">Azure DevOps</a> 커넥터(원격, 권장) 또는 <a href="cli-setup.html">Defender CLI</a>를 구성합니다(이 단계를 마쳐야 스캔이 실행됩니다).</li>
       <li><strong>권장 사항 검토</strong> — 스캔 실행 후 <a href="review-portal.html">포털</a>·이니셔티브에서 발견 항목을 확인합니다.</li>
     </ol>

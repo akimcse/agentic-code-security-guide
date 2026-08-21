@@ -13,7 +13,7 @@
   <main class="main">
   <div class="content">
     <h1 class="page-title">권한 설정 (RBAC)</h1>
-    <p class="page-lead">MDASH 프라이빗 프리뷰의 <strong>첫 단계(Step 0)</strong> — Defender 통합 RBAC로 Agentic 코드 보안에 필요한 <strong>커스텀 역할·권한</strong>을 부여합니다. 이 권한을 먼저 부여한 뒤 <a href="onboarding-start.html">온보딩 시작(진입점·약관 수락)</a>으로 넘어갑니다. 전체 설정 단계와 사전 요구사항은 <a href="index.html">개요</a>를 참고하세요.</p>
+    <p class="page-lead">MDASH 온보딩의 <strong>사전 준비</strong> 중 하나 — Defender 통합 RBAC로 Agentic 코드 보안에 필요한 <strong>커스텀 역할·권한</strong>을 부여합니다. 이 작업과 <a href="foundry.html">Foundry 설정</a>은 순서 상관없이(병렬로) 진행할 수 있으며, 둘 다 마친 뒤 <a href="portal-onboarding.html">온보딩</a>으로 넘어갑니다. 전체 설정 단계와 사전 요구사항은 <a href="index.html">개요</a>를 참고하세요.</p>
 
     <h2>권한 및 커스텀 역할 (RBAC)</h2>
     <p>Microsoft Defender 통합 역할 기반 액세스 제어(<strong>Unified RBAC · URBAC</strong>)를 사용해 MDASH(Agentic code security)에 필요한 권한을 부여하는 <strong>커스텀 역할</strong>을 생성합니다. 이 작업은 Defender 포털에서의 권한 설정까지만 다루며, Foundry 리소스 생성·모델 배포 등 Azure 온보딩은 <a href="foundry.html">다음 단계</a>에서 진행합니다.</p>
@@ -109,11 +109,11 @@
     </figure>
     <div class="note"><strong>권한 부여 원칙</strong> 각 사용자에게 필요한 권한만 부여하세요. 예를 들어 스캔을 실행만 하는 담당자에게는 <strong>Run scan (Manage)</strong>, 결과만 확인하는 담당자에게는 <strong>Scan results (Read)</strong>만 부여합니다.</div>
 
-    <div class="note"><strong>다음 단계</strong> 권한 설정을 마쳤으면 <a href="onboarding-start.html">온보딩 시작</a>으로 넘어가 이니셔티브 진입점에서 온보딩 플로우를 시작하고 약관을 수락합니다. 이후 <a href="foundry.html">Foundry 설정</a>(리소스·모델 배포)을 거쳐 <a href="onboarding-complete.html">온보딩 완료</a>(엔드포인트·Validate·Save)로 마무리합니다.</div>
+    <div class="note"><strong>다음 단계</strong> 이 권한 설정과 <a href="foundry.html">Foundry 설정</a>(전용 리소스 생성·모델 배포)은 <strong>순서 상관없이</strong> 진행할 수 있습니다. 둘 다 마쳤으면 <a href="portal-onboarding.html">온보딩</a>에서 진입점 진입·약관 수락·엔드포인트 입력(Validate·Save)으로 마무리합니다.</div>
 
     <div class="pagenav">
-      <a href="architecture.html"><span class="lbl">← 이전</span><br><strong>아키텍처 (보안 설계)</strong></a>
-      <a class="nxt" href="onboarding-start.html"><span class="lbl">다음 →</span><br><strong>온보딩 시작 (진입점·약관)</strong></a>
+      <a href="foundry.html"><span class="lbl">← 이전</span><br><strong>Foundry 설정</strong></a>
+      <a class="nxt" href="portal-onboarding.html"><span class="lbl">다음 →</span><br><strong>온보딩</strong></a>
     </div>
     <div class="footer">출처: <a href="https://learn.microsoft.com/en-us/security-exposure-management/ai-code-security-onboarding" target="_blank" rel="noopener">Getting Started with Codename MDASH</a> · <a href="https://learn.microsoft.com/en-us/defender-xdr/create-custom-rbac-roles" target="_blank" rel="noopener">Create custom roles with Microsoft Defender unified RBAC</a> · <a href="https://learn.microsoft.com/en-us/defender-xdr/manage-rbac-permissions" target="_blank" rel="noopener">Permissions in Microsoft Defender unified RBAC</a>. 비공식 한글 요약본.</div>
   </div>

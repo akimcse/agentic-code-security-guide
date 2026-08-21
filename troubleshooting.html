@@ -15,6 +15,15 @@
     <h1 class="page-title">트러블슈팅</h1>
     <p class="page-lead">MDASH 설정·스캔 과정에서 자주 마주치는 증상과 해결 방법을 정리했습니다.</p>
 
+    <h2>Foundry 리소스를 만들 권한이 없습니다</h2>
+    <p>Foundry 프로젝트 생성 화면에서 <strong>프로젝트 생성 권한이 없다</strong>는 오류가 뜨는 경우, 구독 또는 리소스 그룹에서 <strong>리소스를 생성할 수 있는 역할</strong>이 없기 때문입니다.</p>
+    <ul>
+      <li>공식 MDASH 문서 기준, Foundry 리소스 생성에는 구독/리소스 그룹의 <strong>Owner</strong> 등 리소스 생성 가능 역할이 필요합니다. (일반 Azure RBAC에서는 <strong>Contributor</strong> 이상이면 리소스 생성이 가능하지만, 조직의 구독 거버넌스 정책에 따라 다를 수 있습니다.)</li>
+      <li>권한이 없으면 <strong>구독 관리자</strong> 또는 <strong>사내 클라우드 관리 절차</strong>를 통해 해당 구독/리소스 그룹에 대한 역할을 요청하세요.</li>
+      <li>Foundry 전용 역할(Foundry User/Owner/Account Owner 등)의 이름·범위는 <a href="https://learn.microsoft.com/en-us/azure/foundry/concepts/rbac-foundry" target="_blank" rel="noopener">Role-based access control for Microsoft Foundry</a>를 참고하세요.</li>
+    </ul>
+    <p>사전 요구사항·역할 이름 변경(Azure AI → Foundry) 안내는 <a href="foundry.html">Foundry 설정</a>을 참고하세요.</p>
+
     <h2>Exposure Management(노출 관리) 메뉴가 보이지 않습니다</h2>
     <p>Entra ID의 <strong>Security Administrator</strong> 역할이 있음에도 Defender 포털 좌측 탐색 창에 <strong>Exposure Management</strong> 메뉴가 표시되지 않는 경우가 있습니다. Defender 통합 RBAC(URBAC)가 활성화된 테넌트에서는 해당 워크로드 접근이 <strong>Entra 전역 역할이 아닌 URBAC 권한</strong>으로 제어되기 때문입니다. 아래 항목을 확인하세요.</p>
     <table>
@@ -27,7 +36,7 @@
     <p>커스텀 역할 생성·권한 설정 절차는 <a href="defender-setup.html">권한 설정 (RBAC)</a>을 참고하세요.</p>
 
     <h2>Foundry 설정을 끝냈는데 MDASH 셋업(엔드포인트·키 입력) 창이 안 뜹니다</h2>
-    <p>Foundry 리소스 생성·모델 배포를 마쳤어도, <a href="onboarding-complete.html">온보딩 완료</a> 단계 — <strong>Project endpoint·API key 입력 → Validate → Save</strong> — 를 진행할 <strong>셋업 창(팝업)이 뜨지 않는</strong> 경우가 있습니다. 이는 대개 <strong>브라우저 팝업 동작 차이</strong>로 인한 문제입니다.</p>
+    <p>Foundry 리소스 생성·모델 배포를 마쳤어도, <a href="portal-onboarding.html">온보딩</a> 단계 — <strong>Project endpoint·API key 입력 → Validate → Save</strong> — 를 진행할 <strong>셋업 창(팝업)이 뜨지 않는</strong> 경우가 있습니다. 이는 대개 <strong>브라우저 팝업 동작 차이</strong>로 인한 문제입니다.</p>
     <div class="tip"><strong>해결 — Microsoft Edge에서 열기</strong> 실제 사례에서 <strong>Chrome에서는 MDASH 셋업 창이 뜨지 않았지만, Microsoft Edge로 접속하니 셋업 팝업이 정상적으로 표시</strong>됐습니다. 셋업 창이 안 뜨면 <strong>Edge에서 Defender 포털에 다시 접속</strong>해 온보딩을 진행하세요.</div>
     <p>추가로 확인할 점:</p>
     <ul>

@@ -13,13 +13,14 @@
   <main class="main">
   <div class="content">
     <h1 class="page-title">Foundry 설정</h1>
-    <p class="page-lead">Agentic 코드 보안 설정의 일부로 사용할 MDASH 전용 Microsoft Foundry 리소스를 생성하고, 필수 모델 배포·TPM·콘텐츠 필터·네트워크 접근을 구성합니다.</p>
+    <p class="page-lead">MDASH 온보딩의 <strong>사전 준비</strong> 중 하나 — MDASH 전용 Microsoft Foundry 리소스를 생성하고, 필수 모델 배포·TPM·콘텐츠 필터·네트워크 접근을 구성합니다. 이 작업과 <a href="defender-setup.html">권한 설정(RBAC)</a>은 순서 상관없이(병렬로) 진행할 수 있으며, 둘 다 마친 뒤 <a href="portal-onboarding.html">온보딩</a>으로 넘어갑니다.</p>
 
     <h2>사전 요구사항</h2>
     <ul>
-      <li>활성 구독이 있는 Azure 계정.</li>
-      <li>Foundry 리소스를 생성할 수 있는 역할 — 구독 또는 리소스 그룹의 <strong>Owner</strong> 등.</li>
+      <li><strong>구독 확인</strong> — 활성 구독이 있는 Azure 계정. Foundry 리소스를 생성할 구독·리소스 그룹을 미리 정합니다. (없으면 <a href="https://azure.microsoft.com/pricing/purchase-options/azure-account" target="_blank" rel="noopener">무료 Azure 계정</a>으로 체험 구독을 만들 수 있습니다.)</li>
+      <li><strong>리소스 생성 권한</strong> — 공식 문서 기준, 구독 또는 리소스 그룹에서 Foundry 리소스를 생성할 수 있는 역할(예: <strong>Owner</strong>)이 필요합니다.</li>
     </ul>
+    <div class="note"><strong>참고 — 리소스 생성 권한</strong> 일반적으로 Azure에서 리소스 <em>생성</em>은 <a href="https://learn.microsoft.com/en-us/azure/role-based-access-control/built-in-roles/privileged#contributor" target="_blank" rel="noopener"><strong>Contributor</strong></a> 이상 권한으로 가능하지만(Contributor는 역할 배정을 제외한 모든 리소스 생성·관리 허용), 이는 <strong>일반 Azure RBAC 동작이며 조직의 구독 거버넌스 정책에 따라 다를 수 있습니다</strong>. <a href="https://learn.microsoft.com/en-us/security-exposure-management/mdash-foundry-integration" target="_blank" rel="noopener">공식 MDASH 문서</a>는 리소스 생성 역할로 <strong>Owner</strong>를 예로 듭니다. 권한이 없으면 구독 관리자 또는 사내 클라우드 관리 절차를 통해 요청하세요.</div>
 
     <h2>1. Foundry 리소스 생성</h2>
     <ol class="steps">
@@ -32,7 +33,7 @@
     </ol>
 
     <h2>2. 필수 값 복사</h2>
-    <p>Foundry 프로젝트 <strong>홈(home)</strong> 페이지에서 서비스 연결에 필요한 값을 복사합니다. 이 두 값은 나중에 <a href="onboarding-complete.html">Defender 포털 온보딩</a>(엔드포인트 입력 단계)에서 사용합니다.</p>
+    <p>Foundry 프로젝트 <strong>홈(home)</strong> 페이지에서 서비스 연결에 필요한 값을 복사합니다. 이 두 값은 나중에 <a href="portal-onboarding.html">온보딩</a>(엔드포인트 입력 단계)에서 사용합니다.</p>
     <ol class="steps">
       <li><strong>Project Endpoint</strong>를 찾아 복사합니다.</li>
       <li><strong>API Key</strong>를 찾아 복사합니다.</li>
@@ -82,8 +83,8 @@
     <p>다른 Foundry로 교체·제거하려면 <strong>Initiative &gt; Settings</strong>에서 <strong>Disconnect</strong>. 연결만 제거될 뿐 Foundry 리소스 자체는 삭제되지 않으며, 대안 없이 해제하면 에이전트 코드 스캐닝이 비활성화됩니다.</p>
 
     <div class="pagenav">
-      <a href="onboarding-start.html"><span class="lbl">← 이전</span><br><strong>온보딩 시작 (진입점·약관)</strong></a>
-      <a class="nxt" href="onboarding-complete.html"><span class="lbl">다음 →</span><br><strong>온보딩 완료 (엔드포인트·저장)</strong></a>
+      <a href="architecture.html"><span class="lbl">← 이전</span><br><strong>아키텍처 (보안 설계)</strong></a>
+      <a class="nxt" href="defender-setup.html"><span class="lbl">다음 →</span><br><strong>권한 설정 (RBAC)</strong></a>
     </div>
     <div class="footer">출처: <a href="https://learn.microsoft.com/en-us/security-exposure-management/mdash-foundry-integration" target="_blank" rel="noopener">Microsoft Learn — Connect Microsoft Foundry</a>. 비공식 한글 요약본.</div>
   </div>

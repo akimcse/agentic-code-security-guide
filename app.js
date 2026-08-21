@@ -15,10 +15,9 @@
       ["architecture.html", "아키텍처 (보안 설계)"]
     ] },
     { group: "시작하기 (공통)", items: [
-      ["defender-setup.html", "권한 설정 (RBAC)"],
-      ["onboarding-start.html", "온보딩 시작 (진입점·약관)"],
       ["foundry.html", "Foundry 설정"],
-      ["onboarding-complete.html", "온보딩 완료 (엔드포인트·저장)"]
+      ["defender-setup.html", "권한 설정 (RBAC)"],
+      ["portal-onboarding.html", "온보딩"]
     ]},
     { group: "원격 스캔 (커넥터 경로)", items: [
       ["github-connector.html", "GitHub 커넥터 생성"],
@@ -66,7 +65,7 @@
 
   // On the deployed site, rewire prev/next links that point to a hidden page.
   var PAGENAV_REMAP = {
-    "architecture.html": { nxt: ["defender-setup.html", "권한 설정 (RBAC)"], prev: ["index.html", "개요 (Overview)"] }
+    "architecture.html": { nxt: ["foundry.html", "Foundry 설정"], prev: ["index.html", "개요 (Overview)"] }
   };
   function fixPagenav() {
     if (isLocal()) return;
